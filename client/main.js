@@ -272,7 +272,7 @@ Template.login.events({
 Template.model.helpers({
   edittask: function (e) {
     const id = Session.get("id");
-    return Tasks.findOne({ _id: id });
+    return Tasks.findOne({ _id: id });d
   },
 })
 Template.task.helpers({
