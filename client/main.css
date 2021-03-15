@@ -97,9 +97,9 @@ button[name=updateclick] {
 #register-form{
   display: none;
 }
-#resetpassword{
+/* #resetpassword{
   display: none;
-}
+} */
 #toggle-private{
   float: right;
   font-weight: bold; 

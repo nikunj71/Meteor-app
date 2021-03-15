@@ -75,6 +75,7 @@
     </ul>
     {{/if}}
   </div>
+ 
 </template>
 <!-- ------------------------------------task---------------------------------------- -->
 
@@ -124,9 +125,10 @@
 
 <!-- ----------------------------------------login------------------ -->
 <template name="login">
+  
   <div id="logreg-forms">
     
-
+    
     <form id="sigin" class="form-signin">
       <center><div class="back" style="padding-top: 10%;"></div><i id="back" class="fas fa-chevron-circle-left fa-2x"></i></center>   
       <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
@@ -168,22 +170,6 @@
       <button class="btn btn-primary btn-block" type="reset" id="backBtn"> Back</button>
 
     </form>
-    <form class="form-signin" id="resetpassword">
-      <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Reset password</h1>
-      <input type="text" class="form-control" placeholder="password" required="" id="pass">
-      <input type="text" class="form-control" placeholder="re-password" required="" id="conpass">
-      <div class="input-group mb-3">
-       
-      <span class="input-group-text" id="eye"><i class="fa fa-eye"  aria-hidden="true"></i></span>
-      <span class="input-group-text" id="eye1"><i class="fa fa-eye"  aria-hidden="true"></i></span>
-  
-    </div>
-      
-  
-      <button class="btn btn-success btn-block" type="submit"><i class="fas fa-sign-in-alt"></i> Sign in</button>
-      <button class="btn btn-primary btn-block" type="reset" id="backBtn"> Back</button>
-  
-    </form>
     <div class="panel-body" id="register-form">
       <div class="text-center">
     <h3><i class="fa fa-lock fa-4x"></i></h3>
@@ -200,8 +186,8 @@
         </div>
       </div>
       <div class="form-group">
-        <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
-      <button class="btn btn-primary btn-block" type="reset" id="backBtn"> Back</button>
+        <input name="recover-submit" class="btn btn-lg btn-primary btn-block" id="backBtnn"  value="Reset Password" type="submit">
+      <!-- <button class="btn btn-primary btn-block" type="reset" id="backBtn" > Back</button> -->
 
       </div>
       <input type="hidden" class="hide" name="token" id="token" value=""> 
@@ -381,3 +367,37 @@
       aria-describedby="search-addon" />
   </div>
  </template>
+
+ <!-- ----------------------------------------reset------------------ -->
+
+ <template name="reset">
+  <div id="logreg-forms">
+    
+
+    
+    <form class="form-signin" id="resetpassword">
+      <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Reset password</h1>
+      <input type="text" class="form-control" placeholder="password" required="" id="pass">
+      <input type="text" class="form-control" placeholder="re-password" required="" id="conpass">
+      <div class="input-group mb-3">
+       
+      <span class="input-group-text" id="eye"><i class="fa fa-eye"  aria-hidden="true"></i></span>
+      <span class="input-group-text" id="eye1"><i class="fa fa-eye"  aria-hidden="true"></i></span>
+  
+    </div>
+      
+  
+      <button class="btn btn-success btn-block" type="submit"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+      <button class="btn btn-primary btn-block" type="reset" id="backBtn"> Back</button>
+  
+    </form>
+   
+  </div>
+  
+
+  
+  
+ </template>
+
+ <!-- ----------------------------------------alert------------------ -->
+
