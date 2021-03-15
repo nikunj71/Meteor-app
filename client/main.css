@@ -120,6 +120,12 @@ li .text {
 li.checked {
   color: #888;
 }
+#alertsuccsess{
+display: none;
+}
+#alertsuccsessreset{
+  display: none;
+}
  
 li.checked #textsearch {
   text-decoration: line-through;

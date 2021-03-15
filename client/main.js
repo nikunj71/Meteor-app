@@ -145,6 +145,8 @@ return Session.get("pass")
   passwordin:()=>{
     return Session.get("passin")
       },    
+
+    
 })
 Template.login.onCreated(function(){
   Meteor.subscribe("tasks")
@@ -253,11 +255,17 @@ Template.login.events({
               alert("Enter valid email")
           } else {
               console.log("send link");
-            // $("#alert").show()
-           $("#sigin").show(1000)
-            $("#register-form").hide(1000)
+              $("#alertsuccsess").show().fadeTo(2000, 500).slideUp(500)
+              setTimeout(function() {
+                $("#alertsuccsess").slideUp(500);
+            }, 2000);
+             $("#sigin").show(1000)
+              $("#register-form").hide(1000)
+            }
+     
+            
           }
-      }); 
+      ); 
     // console.log(email);
   },
   // "submit #resetpassword"(e)
@@ -400,6 +408,12 @@ Template.reset.events({
             Meteor.logout()
             FlowRouter.go("/post")
             $("#exampleModal").modal("show");
+            $("#alertsuccsessreset").show().fadeTo(2000, 500).slideUp(500)
+              setTimeout(function() {
+                $("#alertsuccsessreset").slideUp(500);
+            }, 2000);
+             $("#sigin").show(1000)
+              $("#register-form").hide(1000)
         }
     });    
       }
