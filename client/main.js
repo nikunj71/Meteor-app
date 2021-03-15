@@ -400,19 +400,13 @@ Template.reset.events({
             Meteor.logout()
             FlowRouter.go("/post")
             $("#exampleModal").modal("show");
-            // return  "Click this link to reset your password: /reset-password/" + myId;
-
-
-            
         }
     });    
       }
       else{
         alert("note reset password")
-
       }
   }
-
 })
 Template.reset.helpers({
  
