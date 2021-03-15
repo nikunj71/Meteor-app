@@ -27,3 +27,4 @@ reactive-dict
 accounts-base
 accounts-password
 aldeed:simple-schema
+email

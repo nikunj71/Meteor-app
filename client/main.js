@@ -36,6 +36,12 @@ FlowRouter.route("/user/:userid", {
     BlazeLayout.render("layout", { main: "user" });
   },
   });
+  FlowRouter.route("/reset-password/:token", {
+    action: function () {
+      BlazeLayout.render("layout", { main: "reset" });
+    },
+    });
+
 
 Template.post.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
@@ -158,6 +164,10 @@ Template.login.events({
           $("#exampleModal").modal("hide");
           $("#login").hide();
           $("#logout").show();
+            if(Meteor.userId()){
+              console.log("Email has been sent");
+        return Accounts.sendVerificationEmail( Meteor.userId() );
+            }
         }
       });
     } else {
@@ -174,7 +184,7 @@ Template.login.events({
     const username = target.username.value;
     const password = target.password.value;
     const email=target.email.value
-    debugger
+
     console.log(username,password,email,"email");
     Session.set("username", "connected");
     Meteor.call("signupmethod", username, password,email, function (error) {
@@ -192,6 +202,7 @@ Template.login.events({
     $("#signup").hide(1000);
     $("#sigin").show(1000);
     $("#register-form").hide(1000)
+    $("#resetpassword").hide(1000)
   },
   "click #signupBtn"() {
     $("#signup").show(1000);
@@ -228,7 +239,6 @@ Template.login.events({
 
   },
   "click #forgot_pswd"(){
-    console.log("hello");
     $("#register-form").show()
     $("#sigin").hide(1000)
   },
@@ -236,39 +246,51 @@ Template.login.events({
     e.preventDefault()
     const email=$("input[name=emailvarifiction]").val()
     // console.log(Tasks.find({emails:{$ne:email}}));
-    // // { checked: { $ne: true } },+
+    // // { checked: { $ne: true } },
 
       Accounts.forgotPassword({email: email}, function (e, r) {
           if (e) {
               alert("Enter valid email")
           } else {
-            $("#resetpassword").show()
+              console.log("send link");
+            // $("#alert").show()
+           $("#sigin").show(1000)
             $("#register-form").hide(1000)
           }
       }); 
-  
-    console.log(email);
+    // console.log(email);
   },
-  "submit #resetpassword"(e)
-  {
-    e.preventDefault()
-    const password=$("#pass").val()
-    const conpassword=$("#conpass").val()
-    console.log(password,conpassword,"pass");
-    if (isNotEmpty(password) &&password===conpassword) {
-      console.log("hello");
-      Accounts.resetPassword(Session.get('resetPassword'), password, function(err) {
-        if (err) {
-            console.log('We are sorry but something went wrong.');
-        } else {
-            console.log('Your password has been changed. Welcome back!');
-            Session.set('resetPassword', null);
-        }
-    });    
-      }
-  }
+  // "submit #resetpassword"(e)
+  // {
+  //   e.preventDefault()
+  //   const password=$("#pass").val()
+  //   const conpassword=$("#conpass").val()
+  //   console.log(password,conpassword,"pass");
+  //   // $("#resetpassword").hide(1000)
+
+  //   if (password && password===conpassword) {
+  //     console.log("hello");
+  //     Accounts.resetPassword(Session.get('resetPassword'), password, function(err) {
+  //       if (err) {
+  //           console.log('We are sorry but something went wrong.');
+  //         } else {
+  //           console.log('Your password has been changed. Welcome back!');
+  //           Session.set('resetPassword', null);
+  //           $("#resetpassword").hide(1000)
+  //       }
+  //   });    
+  //     }
+  //     else{
+  //       alert("note reset password")
+
+  //     }
+  // }
 
 });
+// console.log(Accounts._resetPasswordToken);
+// if (Accounts._resetPasswordToken) {
+//   Session.set('resetPassword', Accounts._resetPasswordToken);
+// }
 Template.model.helpers({
   edittask: function (e) {
     const id = Session.get("id");
@@ -352,4 +374,47 @@ Template.search.events({
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1 )
     })
  }
+})
+
+
+Template.reset.onCreated(function(){
+ 
+})
+Template.reset.events({
+  "submit #resetpassword"(e)
+  {
+    e.preventDefault()
+    const password=$("#pass").val()
+    const conpassword=$("#conpass").val()
+    const token=FlowRouter.getParam('token');
+    console.log(password,conpassword,token,"pass");
+    // $("#resetpassword").hide(1000)
+
+    if (password && password===conpassword) {
+      console.log("hello");
+      Accounts.resetPassword(token, password, function(err) {
+        if (err) {
+            console.log('We are sorry but something went wrong.');
+          } else {
+            console.log('Your password has been changed. Welcome back!');
+            Meteor.logout()
+            FlowRouter.go("/post")
+            $("#exampleModal").modal("show");
+            // return  "Click this link to reset your password: /reset-password/" + myId;
+
+
+            
+        }
+    });    
+      }
+      else{
+        alert("note reset password")
+
+      }
+  }
+
+})
+Template.reset.helpers({
+ 
+
 })
