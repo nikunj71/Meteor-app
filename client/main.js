@@ -149,20 +149,17 @@ Template.login.helpers({
   },
   alertmessages: () => {
     const alertmessages = Session.get("alert");
-    const error=Session.get("namealert")
+    const error = Session.get("namealert");
     if (alertmessages === "sendemail") {
       return "Send Email!";
     }
     if (alertmessages === "reset") {
       return "Password reset..!";
     }
-    if(alertmessages==="Meteor.reason"){
-      return error
+    if (alertmessages === "Meteor.reason") {
+      return error;
     }
-    if(alertmessages==="invalidemail")
-    return "invalid Email"
-
-   
+    if (alertmessages === "invalidemail") return "invalid Email";
   },
   color: () => {
     const color = Session.get("color");
@@ -191,9 +188,9 @@ Template.login.events({
       Meteor.loginWithPassword(username, password, function (error) {
         if (error) {
           Session.set("alert", "Meteor.reason");
-          Session.set("color","success")
-          Session.set("namealert",error.reason)
-            Session.set("color", "unsuccess");
+          Session.set("color", "success");
+          Session.set("namealert", error.reason);
+          Session.set("color", "unsuccess");
           $("#loginalert").show("slow");
           setTimeout(function () {
             $("#loginalert").hide(500);
@@ -205,7 +202,7 @@ Template.login.events({
           // Meteor.call("varifiction")
         }
       });
-    } 
+    }
   },
 
   "submit #signup": function (event) {
@@ -280,8 +277,8 @@ Template.login.events({
 
     Accounts.forgotPassword({ email: email }, function (e, r) {
       if (e) {
-       Session.set("alert","invalidemail")
-       Session.set("color","unsuccess")
+        Session.set("alert", "invalidemail");
+        Session.set("color", "unsuccess");
         $("#loginalert").show("slow");
         setTimeout(function () {
           $("#loginalert").hide(500);
@@ -425,7 +422,6 @@ Template.model.events({
       setTimeout(function () {
         $("#modelalert").hide(500);
       }, 1000);
-
     }
     e.target.current.value = "";
     e.target.new.value = "";
@@ -501,7 +497,6 @@ Template.status.onCreated(function () {
 Template.status.helpers({
   onstatus: () => Session.get("enemy"),
 });
-
 
 Template.edit.onCreated(function () {
   Meteor.subscribe("tasks");
@@ -611,7 +606,7 @@ Template.reset.events({
 Template.layout.helpers({
   alertmessages: () => {
     const alertmessages = Session.get("alert");
-    
+
     if (alertmessages === "emailmeass") {
       return "Email Update..!";
     }
@@ -619,13 +614,7 @@ Template.layout.helpers({
       return "Password reset..!";
     }
   },
-  
-  })
-
-
-
-
-
+});
 
 // Template.pop.onCreated(function(){
 //   const tmp=this
@@ -645,6 +634,5 @@ Template.layout.helpers({
 //     }
 //   },
 //   "click "
-  
 
 // });
