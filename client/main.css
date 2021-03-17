@@ -137,9 +137,8 @@ li.checked {
 #edit-pass {
   display: none;
 }
-#modelalert{
-  display: none
-  ;
+#modelalert {
+  display: none;
 }
 
 li.checked #textsearch {
