@@ -20,7 +20,7 @@ FlowRouter.route("/post", {
 });
 
 FlowRouter.route("/pop", {
-  action: function (params ) {
+  action: function (params) {
     BlazeLayout.render("layout", { main: "popmain" });
   },
 });
@@ -35,13 +35,12 @@ FlowRouter.route("/user/:userid", {
   action: function () {
     BlazeLayout.render("layout", { main: "user" });
   },
-  });
-  FlowRouter.route("/reset-password/:token", {
-    action: function () {
-      BlazeLayout.render("layout", { main: "reset" });
-    },
-    });
-
+});
+FlowRouter.route("/reset-password/:token", {
+  action: function () {
+    BlazeLayout.render("layout", { main: "reset" });
+  },
+});
 
 Template.post.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
@@ -78,14 +77,13 @@ Template.post.events({
     event.preventDefault();
     const target = event.target;
     const text = target.text.value;
-   
+
     if (target.text.value !== "") {
       Meteor.call("tasks .insert", text);
     }
     target.text.value = "";
   },
   "click #delete"() {
-    
     return Meteor.call("tasks .delete", this._id);
   },
   "click .toggle-checked"() {
@@ -94,16 +92,16 @@ Template.post.events({
   "click #onBtn"() {
     Meteor.disconnect();
     Session.set("enemy", false);
-  
-    $("#offBtn").show()
-    $("#onBtn").hide()
+
+    $("#offBtn").show();
+    $("#onBtn").hide();
     console.log("Server is:-", Meteor.status().status);
   },
   "click #offBtn"() {
     Meteor.reconnect();
     Session.set("enemy", true);
-    $("#offBtn").hide()
-    $("#onBtn").show()
+    $("#offBtn").hide();
+    $("#onBtn").show();
     console.log("Server is:-", Meteor.status().status);
   },
   "click #logout"(e) {
@@ -127,30 +125,59 @@ Template.post.events({
     $("#staticBackdrop").modal("hide");
   },
   "click button[name=updateclick]"(e) {
+    Session.set("boxname", "edittask");
     $("#staticBackdrop").modal("show");
+    $("#edit-task").show();
+    $("#edit-email").hide();
+    $("#edit-pass").hide();
+
     const edit = e.target.id;
     Session.set("id", edit);
   },
 });
 
-Template.login.onCreated(function(){
-  Session.set("pass","password")
-  Session.set("passin","password")
-
-})
+Template.login.onCreated(function () {
+  Session.set("pass", "password");
+  Session.set("passin", "password");
+});
 Template.login.helpers({
-  password:()=>{
-return Session.get("pass")
+  password: () => {
+    return Session.get("pass");
   },
-  passwordin:()=>{
-    return Session.get("passin")
-      },    
+  passwordin: () => {
+    return Session.get("passin");
+  },
+  alertmessages: () => {
+    const alertmessages = Session.get("alert");
+    const error=Session.get("namealert")
+    if (alertmessages === "sendemail") {
+      return "Send Email!";
+    }
+    if (alertmessages === "reset") {
+      return "Password reset..!";
+    }
+    if(alertmessages==="Meteor.reason"){
+      return error
+    }
+    if(alertmessages==="invalidemail")
+    return "invalid Email"
 
-    
-})
-Template.login.onCreated(function(){
-  Meteor.subscribe("tasks")
-})
+   
+  },
+  color: () => {
+    const color = Session.get("color");
+    console.log(color);
+    if (color === "success") {
+      return "alert alert-success";
+    }
+    if (color == "unsuccess") {
+      return "alert alert-danger";
+    }
+  },
+});
+Template.login.onCreated(function () {
+  Meteor.subscribe("tasks");
+});
 
 Template.login.events({
   "submit #sigin": function (event) {
@@ -158,38 +185,43 @@ Template.login.events({
     const target = event.target;
     const username = target.username.value;
     const password = target.password.value;
+    target.username.value = "";
+    target.password.value = "";
     if (username && password !== "") {
       Meteor.loginWithPassword(username, password, function (error) {
         if (error) {
-          alert(error.reason);
+          Session.set("alert", "Meteor.reason");
+          Session.set("color","success")
+          Session.set("namealert",error.reason)
+            Session.set("color", "unsuccess");
+          $("#loginalert").show("slow");
+          setTimeout(function () {
+            $("#loginalert").hide(500);
+          }, 1000);
         } else {
           $("#exampleModal").modal("hide");
           $("#login").hide();
           $("#logout").show();
-            if(Meteor.userId()){
-              console.log("Email has been sent");
-        return Accounts.sendVerificationEmail( Meteor.userId() );
-            }
+          // Meteor.call("varifiction")
         }
       });
-    } else {
-      alert("invalid login");
-    }
-    target.username.value = "";
-    target.password.value = "";
+    } 
   },
 
   "submit #signup": function (event) {
     event.preventDefault();
-    
+
     const target = event.target;
     const username = target.username.value;
     const password = target.password.value;
-    const email=target.email.value
+    const email = target.email.value;
+    target.username.value = "";
+    target.password.value = "";
+    target.email.value = "";
 
-    console.log(username,password,email,"email");
+    console.log(username, password, email, "email");
     Session.set("username", "connected");
-    Meteor.call("signupmethod", username, password,email, function (error) {
+    Meteor.call("signupmethod", username, password, email, function (error) {
       if (error) {
         alert(error.reason);
       } else {
@@ -197,119 +229,268 @@ Template.login.events({
         $("#signup").hide(1000);
       }
     });
-    target.username.value = "";
-    target.password.value = "";
   },
   "click #backBtn"() {
     $("#signup").hide(1000);
     $("#sigin").show(1000);
-    $("#register-form").hide(1000)
-    $("#resetpassword").hide(1000)
+    $("#register-form").hide(1000);
   },
+
   "click #signupBtn"() {
     $("#signup").show(1000);
     $("#sigin").hide(1000);
   },
-  "mouseenter #eye"(){
-    Session.set("pass","text")
-    $("#eye").hide()
-    $("#eye1").show()
-
+  "mouseenter #eye"() {
+    Session.set("pass", "text");
+    $("#eye").hide();
+    $("#eye1").show();
   },
-  "mouseleave  #eye1"(){
-    Session.set("pass","password")
+  "mouseleave  #eye1"() {
+    Session.set("pass", "password");
 
-   $("#eye").show()
-    $("#eye1").hide()
-
+    $("#eye").show();
+    $("#eye1").hide();
   },
-  "mouseenter #eyein"(){
-    Session.set("passin","text")
-    $("#eyein").hide()
-    $("#eyein1").show()
-
+  "mouseenter #eyein"() {
+    Session.set("passin", "text");
+    $("#eyein").hide();
+    $("#eyein1").show();
   },
-  "mouseleave #eyein1"(){
-    Session.set("passin","password")
+  "mouseleave #eyein1"() {
+    Session.set("passin", "password");
 
-   $("#eyein").show()
-    $("#eyein1").hide()
-
+    $("#eyein").show();
+    $("#eyein1").hide();
   },
-  "click #back"(){
+  "click #back"() {
     $("#exampleModal").modal("hide");
-
+    console.log("hello");
   },
-  "click #forgot_pswd"(){
-    $("#register-form").show()
-    $("#sigin").hide(1000)
+  "click #wrong"() {
+    $("#register-form").hide(1000);
+    $("#sigin").show(1000);
   },
-  "submit #email"(e){
-    e.preventDefault()
-    const email=$("input[name=emailvarifiction]").val()
-    // console.log(Tasks.find({emails:{$ne:email}}));
-    // // { checked: { $ne: true } },
-
-      Accounts.forgotPassword({email: email}, function (e, r) {
-          if (e) {
-              alert("Enter valid email")
-          } else {
-              console.log("send link");
-              $("#alertsuccsess").show().fadeTo(2000, 500).slideUp(500)
-              setTimeout(function() {
-                $("#alertsuccsess").slideUp(500);
-            }, 2000);
-             $("#sigin").show(1000)
-              $("#register-form").hide(1000)
-            }
-     
-            
-          }
-      ); 
-    // console.log(email);
+  "click #forgot_pswd"() {
+    $("#register-form").show();
+    $("#sigin").hide(1000);
   },
-  // "submit #resetpassword"(e)
-  // {
-  //   e.preventDefault()
-  //   const password=$("#pass").val()
-  //   const conpassword=$("#conpass").val()
-  //   console.log(password,conpassword,"pass");
-  //   // $("#resetpassword").hide(1000)
+  "submit #email"(e) {
+    e.preventDefault();
+    const email = $("input[name=emailvarifiction]").val();
 
-  //   if (password && password===conpassword) {
-  //     console.log("hello");
-  //     Accounts.resetPassword(Session.get('resetPassword'), password, function(err) {
-  //       if (err) {
-  //           console.log('We are sorry but something went wrong.');
-  //         } else {
-  //           console.log('Your password has been changed. Welcome back!');
-  //           Session.set('resetPassword', null);
-  //           $("#resetpassword").hide(1000)
-  //       }
-  //   });    
-  //     }
-  //     else{
-  //       alert("note reset password")
-
-  //     }
-  // }
-
+    Accounts.forgotPassword({ email: email }, function (e, r) {
+      if (e) {
+       Session.set("alert","invalidemail")
+       Session.set("color","unsuccess")
+        $("#loginalert").show("slow");
+        setTimeout(function () {
+          $("#loginalert").hide(500);
+        }, 2000);
+      } else {
+        console.log("send link");
+        $("#loginalert").show("slow");
+        setTimeout(function () {
+          $("#loginalert").hide(500);
+        }, 2000);
+        $("#sigin").show(1000);
+        $("#register-form").hide(1000);
+        Session.set("alert", "sendemail");
+      }
+    });
+  },
 });
-// console.log(Accounts._resetPasswordToken);
-// if (Accounts._resetPasswordToken) {
-//   Session.set('resetPassword', Accounts._resetPasswordToken);
-// }
 Template.model.helpers({
   edittask: function (e) {
     const id = Session.get("id");
     return Tasks.findOne({ _id: id });
   },
-})
+  editemail: function (e) {
+    const id = Session.get("emailid");
+    console.log(id);
+    const email = Meteor.users.findOne({ _id: id });
+    console.log();
+    const emailfullid = email.emails[0].address;
+    console.log(Session.set("emailfullid", emailfullid));
+
+    return emailfullid;
+  },
+  editdetails: () => {
+    const editdetails = Session.get("boxname");
+    if (editdetails === "edit-email") {
+      return "Update email";
+    }
+    if (editdetails === "edittask") {
+      return "Edit Task";
+    }
+    if (editdetails === "edit-pass") return "Reset password";
+  },
+  resetpassalert: () => {
+    const resetpassalert = Session.get("resetpassalert");
+    if (resetpassalert === "empty") {
+      return "Empty password";
+    }
+    if (resetpassalert === "same") {
+      return "Password must same";
+    }
+    if (resetpassalert === "already") {
+      return "Password alredy use";
+    }
+    if (resetpassalert === "success") {
+      return "Success Reset password";
+    }
+    if (resetpassalert === "invalid") {
+      return "Invalid Password";
+    }
+    if (resetpassalert === "emaiuse") {
+      return "Email already use";
+    }
+    if (resetpassalert === "emailempty") {
+      return "Empty email";
+    }
+    if (resetpassalert === "emailinvalid") {
+      return "Invalid email";
+    }
+  },
+  color: () => {
+    const color = Session.get("color");
+    console.log(color);
+    if (color === "success") {
+      return "alert alert-success";
+    }
+    if (color == "unsuccess") {
+      return "alert alert-danger";
+    }
+  },
+});
+
+Template.model.events({
+  "submit #edit-email"(e) {
+    e.preventDefault();
+    // debugger
+    const id = Session.get("emailid");
+    const email = Meteor.users.findOne({ _id: id });
+    const emailold = email.emails[0].address;
+    const emailcurrent = e.target.current.value;
+    const emailnew = e.target.new.value;
+
+    if (emailcurrent !== "") {
+      if (emailcurrent === emailold) {
+        if (emailnew !== "") {
+          if (emailnew && emailnew !== emailcurrent) {
+            Meteor.call("addemail", id, emailnew, emailcurrent, function (e) {
+              if (e) {
+                alert(Meteor.reason);
+              } else {
+                $("#staticBackdrop").modal("hide");
+
+                $("#layoutalert").show("slow");
+                setTimeout(function () {
+                  $("#layoutalert").hide(500);
+                }, 1000);
+                Session.set("alert", "emailmeass");
+              }
+            });
+          } else {
+            Session.set("resetpassalert", "emaiuse");
+            Session.set("color", "unsuccess");
+
+            $("#modelalert").show("slow");
+            setTimeout(function () {
+              $("#modelalert").hide(500);
+            }, 1000);
+          }
+        } else {
+          Session.set("resetpassalert", "emailempty");
+          Session.set("color", "unsuccess");
+          $("#modelalert").show("slow");
+          setTimeout(function () {
+            $("#modelalert").hide(500);
+          }, 1000);
+        }
+      } else {
+        Session.set("resetpassalert", "emailinvalid");
+        Session.set("color", "unsuccess");
+
+        $("#modelalert").show("slow");
+        setTimeout(function () {
+          $("#modelalert").hide(500);
+        }, 1000);
+      }
+    } else {
+      // alert("invalid email");
+      Session.set("resetpassalert", "emailempty");
+      Session.set("color", "unsuccess");
+
+      $("#modelalert").show("slow");
+      setTimeout(function () {
+        $("#modelalert").hide(500);
+      }, 1000);
+
+    }
+    e.target.current.value = "";
+    e.target.new.value = "";
+  },
+  "submit #edit-pass"(e) {
+    e.preventDefault();
+    const newpass = e.target.newpass.value;
+    const oldpass = e.target.oldpass.value;
+    const conpass = e.target.conpass.value;
+    e.target.newpass.value = "";
+    e.target.oldpass.value = "";
+    e.target.conpass.value = "";
+
+    if (newpass !== "" && oldpass !== "" && conpass !== "") {
+      if (newpass === conpass) {
+        if (newpass !== oldpass) {
+          Accounts.changePassword(oldpass, newpass, function (e) {
+            if (e) {
+              $("#modelalert").show("slow");
+              setTimeout(function () {
+                $("#modelalert").hide(500);
+              }, 1000);
+              Session.set("resetpassalert", "invalid");
+            } else {
+              $("#staticBackdrop").modal("hide");
+              Session.set("color", "success");
+              $("#layoutalert").show("slow");
+              setTimeout(function () {
+                $("#layoutalert").hide(500);
+              }, 1000);
+            }
+          });
+        } else {
+          Session.set("resetpassalert", "already");
+          Session.set("color", "unsuccess");
+
+          $("#modelalert").show("slow");
+          setTimeout(function () {
+            $("#modelalert").hide(500);
+          }, 1000);
+        }
+      } else {
+        Session.set("resetpassalert", "same");
+        Session.set("color", "unsuccess");
+
+        $("#modelalert").show("slow");
+        setTimeout(function () {
+          $("#modelalert").hide(500);
+        }, 1000);
+      }
+    } else {
+      Session.set("resetpassalert", "empty");
+      Session.set("color", "unsuccess");
+
+      $("#modelalert").show("slow");
+      setTimeout(function () {
+        $("#modelalert").hide(500);
+      }, 1000);
+    }
+  },
+});
 Template.task.helpers({
   isOwner() {
     return this.owner === Meteor.userId();
   },
- 
 });
 console.log("Server is:-", Meteor.status().status);
 
@@ -322,107 +503,148 @@ Template.status.helpers({
 });
 
 
-Template.pop.events({
-  "change select":function(e){
-    if($(e.target).val()==="post")
-    {
-      localStorage.setItem("mybtn", "post" );
-      FlowRouter.go("/post")
-    }
-    if($(e.target).val()==="home")
-    {
-      FlowRouter.go("/")
-      localStorage.setItem("mybtn", "home");
-      Meteor.logout();
-    }    
-  }
-})
-Template.edit.onCreated(function(){
+Template.edit.onCreated(function () {
   Meteor.subscribe("tasks");
-})
-Template.edit.helpers({
-  editjob: function(){
-      const id = FlowRouter.getParam('id');
-    return Tasks.findOne({ _id: id });
-  }
 });
-Template.edit.onCreated(function(){
+Template.edit.helpers({
+  editjob: function () {
+    const id = FlowRouter.getParam("id");
+    return Tasks.findOne({ _id: id });
+  },
+});
+Template.edit.onCreated(function () {
   Meteor.subscribe("tasks");
-
-})
+});
 Template.user.helpers({
-  username: function(){
-      const id = FlowRouter.getParam('userid');
-   
-    return Meteor.users.findOne({ _id: id });
+  username: function () {
+    const id = FlowRouter.getParam("userid");
 
-  }
+    return Meteor.users.findOne({ _id: id });
+  },
 });
 
 Template.main.helpers({
-  userid:()=>{
-    return Meteor.userId()
-  }
-})
+  userid: () => {
+    return Meteor.userId();
+  },
+});
+Template.main.events({
+  "click a[name=resetemail]"(e) {
+    const id = Meteor.userId();
+    Session.set("emailid", id);
+    Session.set("boxname", "edit-email");
+    $("#staticBackdrop").modal("show");
+    $("#edit-task").hide();
+    $("#edit-email").show();
+    $("#edit-pass").hide();
+  },
+  "click a[name=resetpass]"(e) {
+    Session.set("boxname", "edit-pass");
+    $("#staticBackdrop").modal("show");
+    $("#edit-task").hide();
+    $("#edit-email").hide();
+    $("#edit-pass").show();
+  },
+});
+
 Template.user.events({
-  "submit #view"(e){
-    e.preventDefault()
-    const id=Meteor.userId()
-    const view=e.target.view.value
-    Meteor.call("task .view",id,view)
-    FlowRouter.go("/post")
-  }
-})
+  "submit #view"(e) {
+    e.preventDefault();
+    const id = Meteor.userId();
+    const view = e.target.view.value;
+    Meteor.call("task .view", id, view);
+    FlowRouter.go("/post");
+  },
+});
 
 Template.search.events({
   "keyup #inputsearch"(e) {
     var value = $(e.target).val();
     console.log(value);
-    $(" #textsearch ").parent().filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1 )
-    })
- }
-})
+    $(" #textsearch ")
+      .parent()
+      .filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+  },
+});
 
-
-Template.reset.onCreated(function(){
- 
-})
+Template.reset.onCreated(function () {});
 Template.reset.events({
-  "submit #resetpassword"(e)
-  {
-    e.preventDefault()
-    const password=$("#pass").val()
-    const conpassword=$("#conpass").val()
-    const token=FlowRouter.getParam('token');
-    console.log(password,conpassword,token,"pass");
-    // $("#resetpassword").hide(1000)
-
-    if (password && password===conpassword) {
+  "submit #resetpassword"(e) {
+    e.preventDefault();
+    const password = $("#pass").val();
+    const conpassword = $("#conpass").val();
+    const token = FlowRouter.getParam("token");
+    console.log(password, conpassword, token, "pass");
+    if (password && password === conpassword) {
       console.log("hello");
-      Accounts.resetPassword(token, password, function(err) {
+      Accounts.resetPassword(token, password, function (err) {
         if (err) {
-            console.log('We are sorry but something went wrong.');
-          } else {
-            console.log('Your password has been changed. Welcome back!');
-            Meteor.logout()
-            FlowRouter.go("/post")
-            $("#exampleModal").modal("show");
-            $("#alertsuccsessreset").show().fadeTo(2000, 500).slideUp(500)
-              setTimeout(function() {
-                $("#alertsuccsessreset").slideUp(500);
-            }, 2000);
-             $("#sigin").show(1000)
-              $("#register-form").hide(1000)
+          console.log("We are sorry but something went wrong.");
+        } else {
+          console.log("Your password has been changed. Welcome back!");
+          Meteor.logout();
+          FlowRouter.go("/post");
+          $("#exampleModal").modal("show");
+          $("#modelalert").show("slow");
+          setTimeout(function () {
+            $("#modelalert").hide(500);
+          }, 2000);
+          Session.set("alert", "reset");
+          $("#sigin").show(1000);
+          $("#register-form").hide(1000);
         }
-    });    
-      }
-      else{
-        alert("note reset password")
-      }
-  }
-})
-Template.reset.helpers({
- 
+      });
+    } else {
+      alert("note reset password");
+    }
+  },
+  "click #backreset"() {
+    console.log("hello");
+    FlowRouter.go("/post");
+    $("#exampleModal").dal("show");
+    $("#sigin").show(1000);
+    $("#register-form").hide(1000);
+  },
+});
+Template.layout.helpers({
+  alertmessages: () => {
+    const alertmessages = Session.get("alert");
+    
+    if (alertmessages === "emailmeass") {
+      return "Email Update..!";
+    }
+    if (alertmessages === "passmeass") {
+      return "Password reset..!";
+    }
+  },
+  
+  })
 
-})
+
+
+
+
+
+// Template.pop.onCreated(function(){
+//   const tmp=this
+//   tmp.select=true
+// })
+
+// Template.pop.events({
+//   "change select": function (e) {
+//     if ($(e.target).val() === "post") {
+//       localStorage.setItem("mybtn", "post");
+//       FlowRouter.go("/post");
+//     }
+//     if ($(e.target).val() === "home") {
+//       FlowRouter.go("/");
+//       localStorage.setItem("mybtn", "home");
+//       Meteor.logout();
+//     }
+//   },
+//   "click "
+  
+
+// });
