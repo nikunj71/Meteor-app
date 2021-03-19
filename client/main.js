@@ -1,6 +1,8 @@
 import "./main.html";
 import "../lib/task.js";
 
+// -----------------------------router-------------------------
+
 FlowRouter.route("/", {
   action: function () {
     BlazeLayout.render("layout", { main: "home" });
@@ -42,6 +44,101 @@ FlowRouter.route("/reset-password/:token", {
   },
 });
 
+FlowRouter.route("/verify-email/:tokenemail", {
+  action: function () {
+    BlazeLayout.render("layout", { main: "verifyemail" });
+  },
+});
+
+// --------------------------comman-function------------------------
+
+layoutalert = () => {
+  $("#layoutalert").show("slow");
+  setTimeout(function () {
+    $("#layoutalert").hide(500);
+  }, 1000);
+};
+
+modelalert = () => {
+  $("#modelalert").show("slow");
+  setTimeout(function () {
+    $("#modelalert").hide(500);
+  }, 1000);
+};
+
+loginalert = () => {
+  $("#loginalert").show("slow");
+  setTimeout(function () {
+    $("#loginalert").hide(500);
+  }, 1000);
+};
+
+color = () => {
+  const color = Session.get("color");
+  console.log(color);
+  if (color === "success") {
+    return "alert alert-success";
+  }
+  if (color == "unsuccess") {
+    return "alert alert-danger";
+  }
+};
+
+messages = () => {
+  const alertmessages = Session.get("alert");
+  const error = Session.get("namealert");
+  if (alertmessages === "sendemail") {
+    return "Send Email!";
+  }
+  if (alertmessages === "reset") {
+    return "Password reset..!";
+  }
+  if (alertmessages === "Meteor.reason") {
+    return error;
+  }
+  if (alertmessages === "invalidemail") {
+    return "invalid Email";
+  }
+  if (alertmessages === "emailmeass") {
+    return "Email Update..!";
+  }
+  if (alertmessages === "passmeass") {
+    return "Password reset..!";
+  }
+  if (alertmessages === "verify") {
+    return "Verifyed Your Account";
+  }
+  if (alertmessages === "unverify") {
+    return "Your Account is not verify";
+  }
+  if (alertmessages === "empty") {
+    return "Empty password";
+  }
+  if (alertmessages === "same") {
+    return "Password must same";
+  }
+  if (alertmessages === "already") {
+    return "Password alredy use";
+  }
+  if (alertmessages === "success") {
+    return "Success Reset password";
+  }
+  if (alertmessages === "invalid") {
+    return "Invalid Password";
+  }
+  if (alertmessages === "emaiuse") {
+    return "Email already use";
+  }
+  if (alertmessages === "emailempty") {
+    return "Empty email";
+  }
+  if (alertmessages === "emailinvalid") {
+    return "Invalid email";
+  }
+};
+
+// ---------------------------------------------------------
+
 Template.post.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
   Tracker.autorun(() => {
@@ -69,6 +166,18 @@ Template.post.helpers({
   completedCount() {
     const complete = Tasks.find({ checked: { $ne: false } });
     return complete.count();
+  },
+  verificationstatus() {
+    const id = Meteor.userId();
+    const email = Meteor.users.findOne({ _id: id });
+    const emailold = email && email.emails[0].verified;
+    Session.set("statusicon", emailold);
+    console.log(emailold);
+    if (emailold === false) {
+      return true;
+    } else {
+      return false;
+    }
   },
 });
 
@@ -134,6 +243,9 @@ Template.post.events({
     const edit = e.target.id;
     Session.set("id", edit);
   },
+  "click #alerticon"() {
+    $("#layout").fadeOut(1000);
+  },
 });
 
 Template.login.onCreated(function () {
@@ -147,29 +259,11 @@ Template.login.helpers({
   passwordin: () => {
     return Session.get("passin");
   },
-  alertmessages: () => {
-    const alertmessages = Session.get("alert");
-    const error = Session.get("namealert");
-    if (alertmessages === "sendemail") {
-      return "Send Email!";
-    }
-    if (alertmessages === "reset") {
-      return "Password reset..!";
-    }
-    if (alertmessages === "Meteor.reason") {
-      return error;
-    }
-    if (alertmessages === "invalidemail") return "invalid Email";
+  messages: () => {
+    return messages();
   },
   color: () => {
-    const color = Session.get("color");
-    console.log(color);
-    if (color === "success") {
-      return "alert alert-success";
-    }
-    if (color == "unsuccess") {
-      return "alert alert-danger";
-    }
+    return color();
   },
 });
 Template.login.onCreated(function () {
@@ -191,15 +285,12 @@ Template.login.events({
           Session.set("color", "success");
           Session.set("namealert", error.reason);
           Session.set("color", "unsuccess");
-          $("#loginalert").show("slow");
-          setTimeout(function () {
-            $("#loginalert").hide(500);
-          }, 1000);
+          loginalert();
         } else {
           $("#exampleModal").modal("hide");
           $("#login").hide();
           $("#logout").show();
-          // Meteor.call("varifiction")
+          Meteor.call("varifiction");
         }
       });
     }
@@ -271,6 +362,17 @@ Template.login.events({
     $("#register-form").show();
     $("#sigin").hide(1000);
   },
+  "change #files"(e,r){
+    console.log("hello")
+    const file=$("#files").get(0).files[0]
+    console.log(file);
+    var reader = new FileReader();
+    reader.onload = function(fileLoadEvent) {
+      Meteor.call('file-upload', file, reader.result);
+   };
+  //  reader.readAsBinaryString(file);
+    console.log(file)
+  },
   "submit #email"(e) {
     e.preventDefault();
     const email = $("input[name=emailvarifiction]").val();
@@ -279,16 +381,12 @@ Template.login.events({
       if (e) {
         Session.set("alert", "invalidemail");
         Session.set("color", "unsuccess");
-        $("#loginalert").show("slow");
-        setTimeout(function () {
-          $("#loginalert").hide(500);
-        }, 2000);
+        loginalert();
       } else {
         console.log("send link");
-        $("#loginalert").show("slow");
-        setTimeout(function () {
-          $("#loginalert").hide(500);
-        }, 2000);
+        loginalert();
+        Session.set("alert", "passmeass");
+        Session.set("color", "success");
         $("#sigin").show(1000);
         $("#register-form").hide(1000);
         Session.set("alert", "sendemail");
@@ -321,42 +419,11 @@ Template.model.helpers({
     }
     if (editdetails === "edit-pass") return "Reset password";
   },
-  resetpassalert: () => {
-    const resetpassalert = Session.get("resetpassalert");
-    if (resetpassalert === "empty") {
-      return "Empty password";
-    }
-    if (resetpassalert === "same") {
-      return "Password must same";
-    }
-    if (resetpassalert === "already") {
-      return "Password alredy use";
-    }
-    if (resetpassalert === "success") {
-      return "Success Reset password";
-    }
-    if (resetpassalert === "invalid") {
-      return "Invalid Password";
-    }
-    if (resetpassalert === "emaiuse") {
-      return "Email already use";
-    }
-    if (resetpassalert === "emailempty") {
-      return "Empty email";
-    }
-    if (resetpassalert === "emailinvalid") {
-      return "Invalid email";
-    }
+  messages: () => {
+    return messages();
   },
   color: () => {
-    const color = Session.get("color");
-    console.log(color);
-    if (color === "success") {
-      return "alert alert-success";
-    }
-    if (color == "unsuccess") {
-      return "alert alert-danger";
-    }
+    return color();
   },
 });
 
@@ -380,48 +447,34 @@ Template.model.events({
               } else {
                 $("#staticBackdrop").modal("hide");
 
-                $("#layoutalert").show("slow");
-                setTimeout(function () {
-                  $("#layoutalert").hide(500);
-                }, 1000);
+                layoutalert();
                 Session.set("alert", "emailmeass");
+                Session.set("color", "success");
+                Meteor.call("varifiction");
               }
             });
           } else {
-            Session.set("resetpassalert", "emaiuse");
+            Session.set("alert", "emaiuse");
             Session.set("color", "unsuccess");
 
-            $("#modelalert").show("slow");
-            setTimeout(function () {
-              $("#modelalert").hide(500);
-            }, 1000);
+            modelalert();
           }
         } else {
-          Session.set("resetpassalert", "emailempty");
+          Session.set("alert", "emailempty");
           Session.set("color", "unsuccess");
-          $("#modelalert").show("slow");
-          setTimeout(function () {
-            $("#modelalert").hide(500);
-          }, 1000);
+          modelalert();
         }
       } else {
-        Session.set("resetpassalert", "emailinvalid");
+        Session.set("alert", "emailinvalid");
         Session.set("color", "unsuccess");
 
-        $("#modelalert").show("slow");
-        setTimeout(function () {
-          $("#modelalert").hide(500);
-        }, 1000);
+        modelalert();
       }
     } else {
       // alert("invalid email");
-      Session.set("resetpassalert", "emailempty");
+      Session.set("alert", "emailempty");
       Session.set("color", "unsuccess");
-
-      $("#modelalert").show("slow");
-      setTimeout(function () {
-        $("#modelalert").hide(500);
-      }, 1000);
+      modelalert();
     }
     e.target.current.value = "";
     e.target.new.value = "";
@@ -440,46 +493,30 @@ Template.model.events({
         if (newpass !== oldpass) {
           Accounts.changePassword(oldpass, newpass, function (e) {
             if (e) {
-              $("#modelalert").show("slow");
-              setTimeout(function () {
-                $("#modelalert").hide(500);
-              }, 1000);
-              Session.set("resetpassalert", "invalid");
+              modelalert();
+              Session.set("alert", "invalid");
             } else {
               $("#staticBackdrop").modal("hide");
               Session.set("color", "success");
-              $("#layoutalert").show("slow");
-              setTimeout(function () {
-                $("#layoutalert").hide(500);
-              }, 1000);
+              layoutalert();
             }
           });
         } else {
-          Session.set("resetpassalert", "already");
+          Session.set("alert", "already");
           Session.set("color", "unsuccess");
 
-          $("#modelalert").show("slow");
-          setTimeout(function () {
-            $("#modelalert").hide(500);
-          }, 1000);
+          modelalert();
         }
       } else {
-        Session.set("resetpassalert", "same");
+        Session.set("alert", "same");
         Session.set("color", "unsuccess");
-
-        $("#modelalert").show("slow");
-        setTimeout(function () {
-          $("#modelalert").hide(500);
-        }, 1000);
+        modelalert();
       }
     } else {
-      Session.set("resetpassalert", "empty");
+      Session.set("alert", "empty");
       Session.set("color", "unsuccess");
 
-      $("#modelalert").show("slow");
-      setTimeout(function () {
-        $("#modelalert").hide(500);
-      }, 1000);
+      modelalert();
     }
   },
 });
@@ -582,10 +619,7 @@ Template.reset.events({
           Meteor.logout();
           FlowRouter.go("/post");
           $("#exampleModal").modal("show");
-          $("#modelalert").show("slow");
-          setTimeout(function () {
-            $("#modelalert").hide(500);
-          }, 2000);
+          modelalert();
           Session.set("alert", "reset");
           $("#sigin").show(1000);
           $("#register-form").hide(1000);
@@ -604,35 +638,63 @@ Template.reset.events({
   },
 });
 Template.layout.helpers({
-  alertmessages: () => {
-    const alertmessages = Session.get("alert");
+  messages: () => {
+    return messages();
+  },
+  color: () => {
+    return color();
+  },
+});
 
-    if (alertmessages === "emailmeass") {
-      return "Email Update..!";
-    }
-    if (alertmessages === "passmeass") {
-      return "Password reset..!";
+Template.verifyemail.events({
+  "click #yes"(e) {
+    const token = FlowRouter.getParam("tokenemail");
+    console.log(token);
+    Accounts.verifyEmail(token, function (e) {
+      if (e) {
+        alert(error.reason);
+      } else {
+        FlowRouter.go("/post");
+        Session.set("color", "success");
+        Session.set("alert", "verify");
+        layoutalert();
+      }
+    });
+  },
+  "click #no"() {
+    FlowRouter.go("/post");
+    Session.set("color", "unsuccess");
+    Session.set("alert", "unverify");
+    layoutalert();
+  },
+});
+
+// Template.verificationstatus.helpers(()=>{
+// const status=Session.get("Verificationstatus")
+// console.log(status);
+// icon=()=>{
+//   // if(status===false){
+//   //   return "fa fa-times"
+//   //   }
+//   //   return "fa fa-check"
+//   return "fa fa-times"
+// }
+
+// })
+Template.Verificationstatus.helpers({
+  icon: () => {
+    const status = Session.get("statusicon");
+    console.log(status);
+    if (status === true) {
+      return "./check1.png ";
+    } else {
+      return "./error.png";
     }
   },
 });
 
-// Template.pop.onCreated(function(){
-//   const tmp=this
-//   tmp.select=true
-// })
-
-// Template.pop.events({
-//   "change select": function (e) {
-//     if ($(e.target).val() === "post") {
-//       localStorage.setItem("mybtn", "post");
-//       FlowRouter.go("/post");
-//     }
-//     if ($(e.target).val() === "home") {
-//       FlowRouter.go("/");
-//       localStorage.setItem("mybtn", "home");
-//       Meteor.logout();
-//     }
-//   },
-//   "click "
-
-// });
+Template.Verificationstatus.events({
+  "click #wr"() {
+    console.log("hello");
+  },
+});

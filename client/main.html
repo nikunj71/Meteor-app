@@ -19,11 +19,12 @@
 <!-- ------------------------Layout---------------------------------- -->
 
 <template name="layout">
-  {{>pop}}
+
   <hr />
-  <div class="alert alert-success" role="alert" id="layoutalert">
-    successfully {{alertmessages}}
+  <div class={{color}} role="alert" id="layoutalert">
+    {{messages}}
   </div>
+  
   {{> Template.dynamic template=main}}
 </template>
 
@@ -32,6 +33,12 @@
 <template name="post">
   <div class="container" id="containerid">
     <header>
+      {{#if verificationstatus}}
+      <div class="alert alert-danger" role="alert" id="">
+        <i class="fa fa-times" aria-hidden="true" id="alerticon"></i>
+        Verify Your Email Id
+      </div>
+      {{/if}}
       {{#if currentUser}}
       <h1>Todo List</h1>
       {{else}}
@@ -39,7 +46,8 @@
         <h1>Todos App</h1>
       </center>
       {{/if}} {{#if currentUser}}
-      <div class="statusicon">{{>status}}</div>
+      <div class="statusicon">{{>status}}<br></div>
+     <div class="verification">{{>Verificationstatus}}</div>
       <center>
         <h1>Hello..{{currentUser.username}}</h1>
       </center>
@@ -118,7 +126,7 @@
 <template name="login">
   <div id="logreg-forms">
     <div class={{color}} role="alert" id="loginalert">
-      {{alertmessages}}
+      {{messages}}
     </div>
 
     <form id="sigin" class="form-signin">
@@ -160,6 +168,8 @@
       <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">
         Sign Up
       </h1>
+
+<input class="form-control" type="file" id="files"  />
       <input type="text" class="form-control" placeholder="Username" required="" name="username" />
       <input type="text" class="form-control" placeholder="@gmail.com" required="" name="email" />
       <div class="input-group mb-3">
@@ -211,7 +221,7 @@
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class={{color}} role="alert" id="modelalert">
-        {{resetpassalert}}
+        {{messages}}
       </div>
       <div class="modal-content">
         <div class="modal-header">
@@ -311,7 +321,7 @@
 <!-- ----------------------------------------pop------------------ -->
 <template name="popmain"> Firstname files {{>pop}} </template>
 <template name="pop">
-  <select class="selctor">
+  <select class="selctor" id="selectpop">
     <option value="home">Home</option>
     <option value="post">Post</option>
   </select>
@@ -416,3 +426,33 @@
     </form>
   </div>
 </template>
+
+<!-- ----------------------------------------verifyemail------------------ -->
+<template name="verifyemail">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Verification Email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Verify your email ID
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="no" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-success" id="yes">Yes</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- ----------------------------------------verificationstatus------------------ -->
+<template name="Verificationstatus">
+  <img src="{{icon}}" style="height: 20px;" alt="close">
+</template>
+
+<!-- ----------------------------------------profile------------------ -->
+
+<template name="profile"></template>
