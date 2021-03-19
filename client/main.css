@@ -140,6 +140,12 @@ li.checked {
 #modelalert {
   display: none;
 }
+#alerticon{
+float: right;
+}
+.verification{
+  padding-left: 58%;
+}
 
 li.checked #textsearch {
   text-decoration: line-through;

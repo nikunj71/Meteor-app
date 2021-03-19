@@ -28,3 +28,6 @@ accounts-base
 accounts-password
 aldeed:simple-schema
 email
+server-render
+ostrio:files
+cfs:standard-packages
