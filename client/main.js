@@ -225,13 +225,14 @@ Template.post.events({
   "click #toggle-private"() {
     Meteor.call("tasks.private", this._id, !this.private);
   },
-  "submit .edit-task"(e) {
+  "submit #edit-task"(e) {
     e.preventDefault();
     const target = e.target;
     const edit = target.edit.value;
     const id = Session.get("id");
     Meteor.call("task .update", id, edit);
     $("#staticBackdrop").modal("hide");
+    
   },
   "click button[name=updateclick]"(e) {
     Session.set("boxname", "edittask");
