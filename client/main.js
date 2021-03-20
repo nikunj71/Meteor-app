@@ -225,7 +225,7 @@ Template.post.events({
   "click #toggle-private"() {
     Meteor.call("tasks.private", this._id, !this.private);
   },
-  "submit .edit-task"(e) {
+  "submit #edit-task"(e) {
     e.preventDefault();
     const target = e.target;
     const edit = target.edit.value;
