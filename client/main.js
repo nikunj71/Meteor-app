@@ -232,6 +232,7 @@ Template.post.events({
     const id = Session.get("id");
     Meteor.call("task .update", id, edit);
     $("#staticBackdrop").modal("hide");
+    
   },
   "click button[name=updateclick]"(e) {
     Session.set("boxname", "edittask");
