@@ -282,7 +282,6 @@ Template.login.events({
       Meteor.loginWithPassword(username, password, function (error) {
         if (error) {
           Session.set("alert", "Meteor.reason");
-          Session.set("color", "success");
           Session.set("namealert", error.reason);
           Session.set("color", "unsuccess");
           loginalert();
@@ -311,7 +310,10 @@ Template.login.events({
     Session.set("username", "connected");
     Meteor.call("signupmethod", username, password, email, function (error) {
       if (error) {
-        alert(error.reason);
+        Session.set("alert", "Meteor.reason");
+        Session.set("namealert", error.reason);
+        Session.set("color", "unsuccess");
+        loginalert();
       } else {
         $("#sigin").show(1000);
         $("#signup").hide(1000);
@@ -362,16 +364,16 @@ Template.login.events({
     $("#register-form").show();
     $("#sigin").hide(1000);
   },
-  "change #files"(e,r){
-    console.log("hello")
-    const file=$("#files").get(0).files[0]
+  "change #files"(e, r) {
+    console.log("hello");
+    const file = $("#files").get(0).files[0];
     console.log(file);
     var reader = new FileReader();
-    reader.onload = function(fileLoadEvent) {
-      Meteor.call('file-upload', file, reader.result);
-   };
-  //  reader.readAsBinaryString(file);
-    console.log(file)
+    reader.onload = function (fileLoadEvent) {
+      Meteor.call("file-upload", file, reader.result);
+    };
+    //  reader.readAsBinaryString(file);
+    console.log(file);
   },
   "submit #email"(e) {
     e.preventDefault();
@@ -381,6 +383,7 @@ Template.login.events({
       if (e) {
         Session.set("alert", "invalidemail");
         Session.set("color", "unsuccess");
+
         loginalert();
       } else {
         console.log("send link");
@@ -443,7 +446,10 @@ Template.model.events({
           if (emailnew && emailnew !== emailcurrent) {
             Meteor.call("addemail", id, emailnew, emailcurrent, function (e) {
               if (e) {
-                alert(Meteor.reason);
+                Session.set("alert", "Meteor.reason");
+                Session.set("namealert", error.reason);
+                Session.set("color", "unsuccess");
+                modelalert();
               } else {
                 $("#staticBackdrop").modal("hide");
 
@@ -653,6 +659,10 @@ Template.verifyemail.events({
     Accounts.verifyEmail(token, function (e) {
       if (e) {
         alert(error.reason);
+        // Session.set("alert", "Meteor.reason");
+        // Session.set("namealert", error.reason);
+        // Session.set("color", "unsuccess");
+        // loginalert();
       } else {
         FlowRouter.go("/post");
         Session.set("color", "success");
@@ -688,7 +698,7 @@ Template.Verificationstatus.helpers({
     if (status === true) {
       return "./check1.png ";
     } else {
-      return "./error.png";
+      return "./error.jpg";
     }
   },
 });
