@@ -45,7 +45,7 @@
   <div class="container" id="containerid">
     <header>
       {{#if verificationstatus}}
-      <div class="alert alert-danger" role="alert" id="">
+      <div class="alert alert-danger" role="alert" id="layout">
         <i class="fa fa-times" aria-hidden="true" id="alerticon"></i>
         Verify Your Email Id
       </div>
@@ -56,7 +56,15 @@
         <h1>Todos App</h1>
       </center>
       {{/if}} {{#if currentUser}}
-      <div class="statusicon">{{>status}}<br /></div>
+      <div class="profile">{{>profile}}
+        <br>
+        <a name="resetemail" id="fileupload" class="btn btn-primary">profile</a>
+      </div>
+     
+     
+      <div class="statusicon">{{>status}}<br />
+       <br>
+      </div>
       <div class="verification">{{>Verificationstatus}}</div>
       <center>
         <h1>Hello..{{currentUser.username}}</h1>
@@ -95,7 +103,7 @@
     class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}"
     id="li"
   >
-    <strong>{{username}}:-</strong>
+    {{username}}:-
     {{#if isOwner}}
     <input
       type="checkbox"
@@ -111,7 +119,7 @@
       {{#if private}} Private {{else}} Public {{/if}}
     </button>
     {{/if}}
-    <div id="textsearch">{{text}}</div>
+    <div id="textsearch"><Strong>{{text}}</Strong>  Add Tasks:-{{Date}}  {{Time}}</div>
   </li>
 </template>
 
@@ -128,7 +136,6 @@
   <a href="/user/{{userid}}" class="btn btn-primary">View</a>
   <a name="resetemail" class="btn btn-primary">Change Email</a>
   <a name="resetpass" class="btn btn-primary">Reset Password</a>
-
   <br />
   <br />
   {{>search}} {{/if}} {{theEnemy}}
@@ -212,7 +219,6 @@
         Sign Up
       </h1>
 
-      <input class="form-control" type="file" id="files" />
       <input
         type="text"
         class="form-control"
@@ -352,45 +358,45 @@
               <button type="submit" class="btn btn-primary">Save change</button>
             </div>
           </form>
-          <form action="" id="edit-email">
-            <div class="modal-body">
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label"
-                  >current Email</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  name="current"
-                  value=""
-                  aria-describedby="emailHelp"
-                />
+            <form action="" id="edit-email">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >current Email</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="current"
+                    value=""
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >Email change</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="new"
+                    value=""
+                    aria-describedby="emailHelp"
+                  />
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label"
-                  >Email change</label
+              <div class="modal-footer">
+                <button
+                  type="reset"
+                  id="backreset"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
                 >
-                <input
-                  type="text"
-                  class="form-control"
-                  name="new"
-                  value=""
-                  aria-describedby="emailHelp"
-                />
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary">Save change</button>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="reset"
-                id="backreset"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary">Save change</button>
-            </div>
-          </form>
+            </form>
 
           <form action="" id="edit-pass">
             <div class="modal-body">
@@ -439,6 +445,15 @@
               <button type="submit" class="btn btn-primary">Save change</button>
             </div>
           </form>
+          <form action="" id="fileuploadform">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Choose Profile</label>
+                  <div>{{>file}}</div>
+              </div>  
+              </div>
+          </form>
+
         </div>
       </div>
     </div>
@@ -654,7 +669,15 @@
 <template name="Verificationstatus">
   <img src="{{icon}}" style="height: 20px" alt="close" />
 </template>
+<!-- ----------------------------------------file------------------ -->
+<template name="file">
+<input class="form-control" type="file" id="files" />
+</template>
 
 <!-- ----------------------------------------profile------------------ -->
 
-<template name="profile"></template>
+<template name="profile">
+  <img src="./{{profile}}" style="height: 50px" alt="">
+</template>
+
+
