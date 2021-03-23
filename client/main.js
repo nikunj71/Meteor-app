@@ -179,6 +179,7 @@ Template.post.helpers({
       return false;
     }
   },
+ 
 });
 
 Template.post.events({
@@ -232,7 +233,6 @@ Template.post.events({
     const id = Session.get("id");
     Meteor.call("task .update", id, edit);
     $("#staticBackdrop").modal("hide");
-    
   },
   "click button[name=updateclick]"(e) {
     Session.set("boxname", "edittask");
@@ -246,6 +246,37 @@ Template.post.events({
   },
   "click #alerticon"() {
     $("#layout").fadeOut(1000);
+  },
+   "click #fileupload"() {
+    $("#staticBackdrop").modal("show");
+    $("#fileuploadform").show()
+     $("#edit-task").hide();
+    $("#edit-email").hide();
+    $("#edit-pass").hide();
+
+
+    // $("#")
+  },
+ 
+  "change #files"(e, r) {
+    console.log("hello");
+    const id = Meteor.userId();
+    const file = $("#files").get(0).files[0];
+    const filename = file.name;
+    Session.set("filename",filename)
+    var reader = new FileReader();
+    reader.onload = function () {
+      Meteor.call("file-upload", file, reader.result);
+    };
+    reader.readAsBinaryString(file);
+
+    Meteor.call("filename", filename, id, function (error) {
+      if (error) {
+        alert(error.reason);
+      } else {
+        alert("success");
+      }
+    });
   },
 });
 
@@ -298,7 +329,9 @@ Template.login.events({
 
   "submit #signup": function (event) {
     event.preventDefault();
-
+    const filename = Session.get("filename");
+    const id = Session.get("emailid");
+    console.log(filename);
     const target = event.target;
     const username = target.username.value;
     const password = target.password.value;
@@ -307,8 +340,9 @@ Template.login.events({
     target.password.value = "";
     target.email.value = "";
 
-    console.log(username, password, email, "email");
+    console.log(username, password, email, filename, "email");
     Session.set("username", "connected");
+
     Meteor.call("signupmethod", username, password, email, function (error) {
       if (error) {
         Session.set("alert", "Meteor.reason");
@@ -365,17 +399,7 @@ Template.login.events({
     $("#register-form").show();
     $("#sigin").hide(1000);
   },
-  "change #files"(e, r) {
-    console.log("hello");
-    const file = $("#files").get(0).files[0];
-    console.log(file);
-    var reader = new FileReader();
-    reader.onload = function (fileLoadEvent) {
-      Meteor.call("file-upload", file, reader.result);
-    };
-    //  reader.readAsBinaryString(file);
-    console.log(file);
-  },
+
   "submit #email"(e) {
     e.preventDefault();
     const email = $("input[name=emailvarifiction]").val();
@@ -704,8 +728,21 @@ Template.Verificationstatus.helpers({
   },
 });
 
-Template.Verificationstatus.events({
-  "click #wr"() {
-    console.log("hello");
+// Template.Verificationstatus.events({
+//   "click #wr"() {
+//     console.log("hello");
+//   },
+// });
+
+Template.profile.helpers({
+  profile: () => {
+    const filename = Session.get("filename");
+    console.log(filename);
+    // console.log(filename);
+    // const id=Meteor.userId()
+    // console.log(id);
+    // const data=Meteor.user()
+    // console.log(data);
+    return filename;
   },
 });
