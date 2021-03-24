@@ -75,7 +75,7 @@ loginalert = () => {
 
 color = () => {
   const color = Session.get("color");
-  console.log(color);
+
   if (color === "success") {
     return "alert alert-success";
   }
@@ -135,6 +135,9 @@ messages = () => {
   if (alertmessages === "emailinvalid") {
     return "Invalid email";
   }
+  if(alertmessages==="changepass"){
+    return "Reset password success.."
+  }
 };
 
 // ---------------------------------------------------------
@@ -172,7 +175,7 @@ Template.post.helpers({
     const email = Meteor.users.findOne({ _id: id });
     const emailold = email && email.emails[0].verified;
     Session.set("statusicon", emailold);
-    console.log(emailold);
+
     if (emailold === false) {
       return true;
     } else {
@@ -531,9 +534,11 @@ Template.model.events({
             if (e) {
               modelalert();
               Session.set("alert", "invalid");
+              Session.set("color","unsuccess")
             } else {
               $("#staticBackdrop").modal("hide");
               Session.set("color", "success");
+              Session.set("alert","changepass")
               layoutalert();
             }
           });
@@ -600,7 +605,6 @@ Template.main.helpers({
     const uservalue = Tasks.find({ username: username }).fetch();
     var selectitem = "";
     uservalue.map((item, i) => {
-      console.log(item.checked);
       selectitem = item.checked;
     });
     if (selectitem == true) {
@@ -769,7 +773,7 @@ Template.verifyemail.events({
 Template.Verificationstatus.helpers({
   icon: () => {
     const status = Session.get("statusicon");
-    console.log(status);
+   
     if (status === true) {
       return "./check1.png ";
     } else {
@@ -787,7 +791,7 @@ Template.Verificationstatus.helpers({
 Template.profile.helpers({
   profile: () => {
     const filename = Session.get("filename");
-    console.log(filename);
+   
     // console.log(filename);
     // const id=Meteor.userId()
     // console.log(id);
