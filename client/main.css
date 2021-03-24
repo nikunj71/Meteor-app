@@ -149,6 +149,12 @@ li.checked {
 #alerticon {
   float: right;
 }
+/* #disselectall{
+  display:none
+}
+#selectall{
+  display:none
+} */
 .verification {
   padding-left: 58%;
 }
