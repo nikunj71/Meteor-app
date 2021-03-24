@@ -155,7 +155,7 @@ Template.post.helpers({
         { sort: { createdAt: -1 } }
       );
     }
-    return Tasks.find({}, { sort: { createdAt: -1 } });
+    return Tasks.find({}, { sort: { Time: -1, Date: -1 } });
   },
 
   incompleteCount() {
@@ -179,7 +179,12 @@ Template.post.helpers({
       return false;
     }
   },
- 
+  time() {
+    timeout = Meteor.setTimeout(function () {
+      Session.set("now", new Date().toLocaleTimeString());
+    }, 1000);
+    return Session.get("now");
+  },
 });
 
 Template.post.events({
@@ -240,6 +245,7 @@ Template.post.events({
     $("#edit-task").show();
     $("#edit-email").hide();
     $("#edit-pass").hide();
+    $("#fileuploadform").hide();
 
     const edit = e.target.id;
     Session.set("id", edit);
@@ -247,28 +253,27 @@ Template.post.events({
   "click #alerticon"() {
     $("#layout").fadeOut(1000);
   },
-   "click #fileupload"() {
+  "click #fileupload"() {
     $("#staticBackdrop").modal("show");
-    $("#fileuploadform").show()
-     $("#edit-task").hide();
+    $("#fileuploadform").show();
+    $("#edit-task").hide();
     $("#edit-email").hide();
     $("#edit-pass").hide();
 
-
     // $("#")
   },
- 
+
   "change #files"(e, r) {
     console.log("hello");
     const id = Meteor.userId();
     const file = $("#files").get(0).files[0];
     const filename = file.name;
-    Session.set("filename",filename)
+    Session.set("filename", filename);
     var reader = new FileReader();
     reader.onload = function () {
-      Meteor.call("file-upload", file, reader.result);
+      Meteor.call("file-upload", file, reader.result, filename);
     };
-    reader.readAsBinaryString(file);
+    // reader.readAsBinaryString(file);
 
     Meteor.call("filename", filename, id, function (error) {
       if (error) {
@@ -590,7 +595,22 @@ Template.main.helpers({
   userid: () => {
     return Meteor.userId();
   },
+  selectbtn: () => {
+    const username = Meteor.users.findOne(Meteor.userId()).username;
+    const uservalue = Tasks.find({ username: username }).fetch();
+    var selectitem = "";
+    uservalue.map((item, i) => {
+      console.log(item.checked);
+      selectitem = item.checked;
+    });
+    if (selectitem == true) {
+      return false;
+    } else {
+      return true;
+    }
+  },
 });
+
 Template.main.events({
   "click a[name=resetemail]"(e) {
     const id = Meteor.userId();
@@ -599,7 +619,8 @@ Template.main.events({
     $("#staticBackdrop").modal("show");
     $("#edit-task").hide();
     $("#edit-email").show();
-    $("#edit-pass").hide();
+    $("#edit-pass ").hide();
+    $("#fileuploadform").hide();
   },
   "click a[name=resetpass]"(e) {
     Session.set("boxname", "edit-pass");
@@ -607,6 +628,35 @@ Template.main.events({
     $("#edit-task").hide();
     $("#edit-email").hide();
     $("#edit-pass").show();
+    $("#fileuploadform").hide();
+  },
+  "click a[name=selectdelete]"() {
+    console.log("delete");
+    const username = Meteor.users.findOne(Meteor.userId()).username;
+    const id = Tasks.find({ username: username, checked: true }).fetch();
+    console.log(id);
+
+    id.map((item, r) => {
+      Meteor.call("selectdelete", item._id);
+    });
+  },
+  "click a[name=selectall]"(e) {
+    const username = Meteor.users.findOne(Meteor.userId()).username;
+    const uservalue = Tasks.find({ username: username }).fetch();
+    uservalue.map((item, i) => {
+      Meteor.call("selectall", item._id);
+    });
+    $("#selectall").hide();
+    $("#disselectall").show();
+  },
+  "click a[name=disselectall]"(e) {
+    const username = Meteor.users.findOne(Meteor.userId()).username;
+    const uservalue = Tasks.find({ username: username }).fetch();
+    uservalue.map((item, i) => {
+      Meteor.call("disselectall", item._id);
+    });
+    $("#disselectall").hide();
+    $("#selectall").show();
   },
 });
 
@@ -746,3 +796,5 @@ Template.profile.helpers({
     return filename;
   },
 });
+// const  fs = Npm.require('fs');
+// console.log("hello")

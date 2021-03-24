@@ -57,8 +57,9 @@
       </center>
       {{/if}} {{#if currentUser}}
       <div class="profile">{{>profile}}
+        {{time}}
         <br>
-        <a name="resetemail" id="fileupload" class="btn btn-primary">profile</a>
+        <!-- <a name="resetemail" id="fileupload" class="btn btn-primary">profile</a> -->
       </div>
      
      
@@ -119,7 +120,7 @@
       {{#if private}} Private {{else}} Public {{/if}}
     </button>
     {{/if}}
-    <div id="textsearch"><Strong>{{text}}</Strong>  Add Tasks:-{{Date}}  {{Time}}</div>
+    <div id="textsearch"><Strong>{{text}}</Strong>  Last Modify:-  {{Time}}  {{Date}}</div>
   </li>
 </template>
 
@@ -136,6 +137,15 @@
   <a href="/user/{{userid}}" class="btn btn-primary">View</a>
   <a name="resetemail" class="btn btn-primary">Change Email</a>
   <a name="resetpass" class="btn btn-primary">Reset Password</a>
+  <a name="selectdelete" class="btn btn-primary">Delete</a>
+  {{#if selectbtn}}
+  <a name="selectall" id="selectall" class="btn btn-primary">Select All</a>
+  {{else}}
+  <a name="disselectall" id="disselectall" class="btn btn-primary">Disselect All</a>
+  {{/if}}
+
+
+
   <br />
   <br />
   {{>search}} {{/if}} {{theEnemy}}
