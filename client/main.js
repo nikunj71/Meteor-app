@@ -135,8 +135,11 @@ messages = () => {
   if (alertmessages === "emailinvalid") {
     return "Invalid email";
   }
-  if(alertmessages==="changepass"){
-    return "Reset password success.."
+  if (alertmessages === "changepass") {
+    return "Reset password success..";
+  }
+  if (alertmessages === "resetingpassword") {
+    return "successfully reset password";
   }
 };
 
@@ -158,7 +161,7 @@ Template.post.helpers({
         { sort: { createdAt: -1 } }
       );
     }
-    return Tasks.find({}, { sort: { Time: -1, Date: -1 } });
+    return Tasks.find({}, { sort: { CreatedAt: -1 } });
   },
 
   incompleteCount() {
@@ -267,7 +270,7 @@ Template.post.events({
   },
 
   "change #files"(e, r) {
-    console.log("hello");
+ 
     const id = Meteor.userId();
     const file = $("#files").get(0).files[0];
     const filename = file.name;
@@ -308,6 +311,7 @@ Template.login.helpers({
 });
 Template.login.onCreated(function () {
   Meteor.subscribe("tasks");
+  // Session.set("checkemail", emailcheck);
 });
 
 Template.login.events({
@@ -329,7 +333,17 @@ Template.login.events({
           $("#exampleModal").modal("hide");
           $("#login").hide();
           $("#logout").show();
-          Meteor.call("varifiction");
+          Meteor.setTimeout(function () {
+            Meteor._localStorage.removeItem('Meteor.userId');
+             Meteor._localStorage.removeItem('Meteor.loginToken');
+             Meteor._localStorage.removeItem('Meteor.loginTokenExpires');
+          },300000);
+          const email=Meteor.user().emails[0].verified
+          console.log(email);
+          if (email == false) {
+            Meteor.call("varifiction");
+          }
+          
         }
       });
     }
@@ -397,7 +411,7 @@ Template.login.events({
   },
   "click #back"() {
     $("#exampleModal").modal("hide");
-    console.log("hello");
+   
   },
   "click #wrong"() {
     $("#register-form").hide(1000);
@@ -411,23 +425,23 @@ Template.login.events({
   "submit #email"(e) {
     e.preventDefault();
     const email = $("input[name=emailvarifiction]").val();
-
+    email=""
     Accounts.forgotPassword({ email: email }, function (e, r) {
       if (e) {
         Session.set("alert", "invalidemail");
         Session.set("color", "unsuccess");
-
         loginalert();
       } else {
-        console.log("send link");
+       
         loginalert();
-        Session.set("alert", "passmeass");
         Session.set("color", "success");
         $("#sigin").show(1000);
         $("#register-form").hide(1000);
         Session.set("alert", "sendemail");
+        
       }
     });
+    
   },
 });
 Template.model.helpers({
@@ -437,12 +451,11 @@ Template.model.helpers({
   },
   editemail: function (e) {
     const id = Session.get("emailid");
-    console.log(id);
+   
     const email = Meteor.users.findOne({ _id: id });
-    console.log();
+   
     const emailfullid = email.emails[0].address;
-    console.log(Session.set("emailfullid", emailfullid));
-
+  
     return emailfullid;
   },
   editdetails: () => {
@@ -534,11 +547,11 @@ Template.model.events({
             if (e) {
               modelalert();
               Session.set("alert", "invalid");
-              Session.set("color","unsuccess")
+              Session.set("color", "unsuccess");
             } else {
               $("#staticBackdrop").modal("hide");
               Session.set("color", "success");
-              Session.set("alert","changepass")
+              Session.set("alert", "changepass");
               layoutalert();
             }
           });
@@ -609,6 +622,8 @@ Template.main.helpers({
     });
     if (selectitem == true) {
       return false;
+    } else if (selectitem == false) {
+      return true;
     } else {
       return true;
     }
@@ -635,12 +650,10 @@ Template.main.events({
     $("#fileuploadform").hide();
   },
   "click a[name=selectdelete]"() {
-    console.log("delete");
+ 
     const username = Meteor.users.findOne(Meteor.userId()).username;
     const id = Tasks.find({ username: username, checked: true }).fetch();
-    console.log(id);
-
-    id.map((item, r) => {
+       id.map((item, r) => {
       Meteor.call("selectdelete", item._id);
     });
   },
@@ -650,8 +663,7 @@ Template.main.events({
     uservalue.map((item, i) => {
       Meteor.call("selectall", item._id);
     });
-    $("#selectall").hide();
-    $("#disselectall").show();
+
   },
   "click a[name=disselectall]"(e) {
     const username = Meteor.users.findOne(Meteor.userId()).username;
@@ -659,8 +671,7 @@ Template.main.events({
     uservalue.map((item, i) => {
       Meteor.call("disselectall", item._id);
     });
-    $("#disselectall").hide();
-    $("#selectall").show();
+
   },
 });
 
@@ -677,7 +688,7 @@ Template.user.events({
 Template.search.events({
   "keyup #inputsearch"(e) {
     var value = $(e.target).val();
-    console.log(value);
+   
     $(" #textsearch ")
       .parent()
       .filter(function () {
@@ -698,7 +709,7 @@ Template.reset.events({
       console.log("hello");
       Accounts.resetPassword(token, password, function (err) {
         if (err) {
-          console.log("We are sorry but something went wrong.");
+          alert("We are sorry but something went wrong");
         } else {
           console.log("Your password has been changed. Welcome back!");
           Meteor.logout();
@@ -711,11 +722,11 @@ Template.reset.events({
         }
       });
     } else {
-      alert("note reset password");
+      alert("password must be password");
     }
   },
   "click #backreset"() {
-    console.log("hello");
+    
     FlowRouter.go("/post");
     $("#exampleModal").dal("show");
     $("#sigin").show(1000);
@@ -734,7 +745,6 @@ Template.layout.helpers({
 Template.verifyemail.events({
   "click #yes"(e) {
     const token = FlowRouter.getParam("tokenemail");
-    console.log(token);
     Accounts.verifyEmail(token, function (e) {
       if (e) {
         alert(error.reason);
@@ -773,7 +783,7 @@ Template.verifyemail.events({
 Template.Verificationstatus.helpers({
   icon: () => {
     const status = Session.get("statusicon");
-   
+
     if (status === true) {
       return "./check1.png ";
     } else {
@@ -791,7 +801,7 @@ Template.Verificationstatus.helpers({
 Template.profile.helpers({
   profile: () => {
     const filename = Session.get("filename");
-   
+
     // console.log(filename);
     // const id=Meteor.userId()
     // console.log(id);

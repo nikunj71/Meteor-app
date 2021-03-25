@@ -155,10 +155,15 @@ li.checked {
 #selectall{
   display:none
 } */
+/* #erroricon{
+  float :left
+} */
 .verification {
   padding-left: 58%;
 }
-
+a #selectall{
+  color:white
+}
 li.checked #textsearch {
   text-decoration: line-through;
 }
