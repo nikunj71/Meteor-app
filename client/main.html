@@ -46,6 +46,7 @@
     <header>
       {{#if verificationstatus}}
       <div class="alert alert-danger" role="alert" id="layout">
+        <i class="fas fa-exclamation-circle" id="erroricon"></i>
         <i class="fa fa-times" aria-hidden="true" id="alerticon"></i>
         Verify Your Email Id
       </div>
@@ -104,7 +105,7 @@
     class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}"
     id="li"
   >
-    {{username}}:-
+    {{currentUser.username}}:-
     {{#if isOwner}}
     <input
       type="checkbox"
@@ -134,14 +135,14 @@
   <button id="onBtn" class="btn btn-primary">
     <i class="fa fa-power-off" aria-hidden="true"></i>
   </button>
-  <a href="/user/{{userid}}" class="btn btn-primary">View</a>
-  <a name="resetemail" class="btn btn-primary">Change Email</a>
-  <a name="resetpass" class="btn btn-primary">Reset Password</a>
-  <a name="selectdelete" class="btn btn-primary">Delete</a>
+  <a href="/user/{{userid}}" class="btn btn-primary">Change username</a> 
+  <a name="resetemail" class="btn btn-primary" style="color: white;">Change Email</a>
+  <a name="resetpass" class="btn btn-primary" style="color: white;">Reset Password</a>
+  <a name="selectdelete" class="btn btn-primary" style="color: white;">Delete</a>
   {{#if selectbtn}}
-  <a name="selectall" id="selectall" class="btn btn-primary">Select All</a>
+  <a name="selectall" id="selectall" class="btn btn-primary" style="color: white;">Select All</a>
   {{else}}
-  <a name="disselectall" id="disselectall" class="btn btn-primary">Disselect All</a>
+  <a name="disselectall" id="disselectall" class="btn btn-primary" style="color: white;">Disselect All</a>
   {{/if}}
 
 
@@ -474,7 +475,7 @@
 
 <template name="loginBtn">
   {{#if currentUser}}
-  <button id="logout" class="btn btn-primary">Logout</button>
+  <button id="logout" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i>Logout</button>
   {{else}}
   <button
     id="login"
@@ -482,7 +483,7 @@
     data-bs-toggle="modal"
     data-bs-target="#exampleModal"
   >
-    Login
+  <i class="fas fa-sign-out-alt"></i> Login
   </button>
   {{/if}}
 </template>
@@ -623,14 +624,6 @@
         required=""
         id="conpass"
       />
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="eye"
-          ><i class="fa fa-eye" aria-hidden="true"></i
-        ></span>
-        <span class="input-group-text" id="eye1"
-          ><i class="fa fa-eye" aria-hidden="true"></i
-        ></span>
-      </div>
 
       <button class="btn btn-success btn-block" type="submit">
         <i class="fas fa-sign-in-alt"></i> Sign in
