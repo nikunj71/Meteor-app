@@ -287,6 +287,8 @@ Template.post.events({
     $("#fileuploadform").hide();
     $("#edit-email").hide();
     $("#incomplete").show();
+    $("#complete").hide();
+
     Session.set("boxname", "incomplete");
     console.log("hello");
     const incomplete = Tasks.find({ checked: false }).fetch();
@@ -506,13 +508,7 @@ Template.model.helpers({
   incomplete: () => {
     const incompletevalue = Session.get("functionincomplete");
     console.log(incompletevalue);
-    // if(incompletevalue=="")
-    // {
-    //   return "no data found"
-    // }else{
     return incompletevalue;
-
-    // }
   },
   complete: () => {
     const completevalue = Session.get("functionincomplete");
