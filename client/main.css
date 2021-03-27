@@ -159,6 +159,12 @@ li.checked {
 a #selectall{
   color:white
 }
+#complete{
+  display:none
+}
+#incomplete{
+  display:none
+}
 li.checked #textsearch {
   text-decoration: line-through;
 }

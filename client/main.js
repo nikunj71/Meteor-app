@@ -102,9 +102,6 @@ messages = () => {
   if (alertmessages === "emailmeass") {
     return "Email Update..!";
   }
-  // if (alertmessages === "passmeass") {
-  //   return "Password reset..!";
-  // }
   if (alertmessages === "verify") {
     return "Verifyed Your Account";
   }
@@ -252,6 +249,8 @@ Template.post.events({
     $("#edit-email").hide();
     $("#edit-pass").hide();
     $("#fileuploadform").hide();
+    $("#incomplete").hide();
+    $("#complete").hide();
     const edit = e.target.id;
     Session.set("id", edit);
   },
@@ -286,11 +285,14 @@ Template.post.events({
     $("#staticBackdrop").modal("show");
     $("#fileuploadform").hide();
     $("#edit-email").hide();
-    $("#incomplete").show();
     $("#complete").hide();
+    $("#edit-task").hide();
+    $("#edit-email").hide();
+    $("#edit-pass").hide();
+    $("#fileuploadform").hide();
+    $("#incomplete").show();
 
     Session.set("boxname", "incomplete");
-    console.log("hello");
     const incomplete = Tasks.find({ checked: false }).fetch();
     Session.set("functionincomplete", incomplete);
   },
@@ -299,9 +301,12 @@ Template.post.events({
     $("#fileuploadform").hide();
     $("#edit-email").hide();
     $("#incomplete").hide();
+    $("#edit-task").hide();
+    $("#edit-email").hide();
+    $("#edit-pass").hide();
+    $("#fileuploadform").hide();
     $("#complete").show();
     Session.set("boxname", "complete");
-    console.log("hello");
     const complete = Tasks.find({ checked: true }).fetch();
     Session.set("functionincomplete", complete);
   },
@@ -312,7 +317,6 @@ Template.post.events({
     }
   },
   "mouseleave #imagevarification"() {
-    console.log("hello");
     $("#ptext").hide(1000);
   },
 });
@@ -365,7 +369,6 @@ Template.login.events({
             Meteor._localStorage.removeItem("Meteor.loginTokenExpires");
           }, 300000);
           const email = Meteor.user().emails[0].verified;
-          console.log(email);
           if (email == false) {
             Meteor.call("varifiction");
           }
@@ -387,7 +390,6 @@ Template.login.events({
     target.password.value = "";
     target.email.value = "";
 
-    console.log(username, password, email, filename, "email");
     Session.set("username", "connected");
 
     Meteor.call("signupmethod", username, password, email, function (error) {
@@ -507,14 +509,13 @@ Template.model.helpers({
   },
   incomplete: () => {
     const incompletevalue = Session.get("functionincomplete");
-    console.log(incompletevalue);
-    return incompletevalue;
+      return incompletevalue;
   },
   complete: () => {
     const completevalue = Session.get("functionincomplete");
-    console.log(completevalue);
     return completevalue;
   },
+
 });
 
 Template.model.events({
@@ -699,6 +700,9 @@ Template.main.events({
     $("#edit-email").show();
     $("#edit-pass ").hide();
     $("#fileuploadform").hide();
+    $("#incomplete").hide();
+    $("#complete").hide();
+
   },
   "click a[name=resetpass]"(e) {
     Session.set("boxname", "edit-pass");
@@ -707,6 +711,8 @@ Template.main.events({
     $("#edit-email").hide();
     $("#edit-pass").show();
     $("#fileuploadform").hide();
+    $("#incomplete").hide();
+    $("#complete").hide();
   },
   "click a[name=selectdelete]"() {
     const username = Meteor.users.findOne(Meteor.userId()).username;
@@ -753,9 +759,7 @@ Template.reset.events({
     const password = $("#pass").val();
     const conpassword = $("#conpass").val();
     const token = FlowRouter.getParam("token");
-    console.log(password, conpassword, token, "pass");
     if (password && password === conpassword) {
-      console.log("hello");
       Accounts.resetPassword(token, password, function (err) {
         if (err) {
           alert("We are sorry but something went wrong");
