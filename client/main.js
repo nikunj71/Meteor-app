@@ -102,9 +102,9 @@ messages = () => {
   if (alertmessages === "emailmeass") {
     return "Email Update..!";
   }
-  if (alertmessages === "passmeass") {
-    return "Password reset..!";
-  }
+  // if (alertmessages === "passmeass") {
+  //   return "Password reset..!";
+  // }
   if (alertmessages === "verify") {
     return "Verifyed Your Account";
   }
@@ -143,13 +143,16 @@ messages = () => {
   }
 };
 
-// ---------------------------------------------------------
+// --------------------------------post-------------------------
 
 Template.post.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
   Tracker.autorun(() => {
     Meteor.subscribe("tasks");
   });
+  setTimeout(function () {
+    $("#layout").fadeOut(1000);
+  }, 5000);
 });
 
 Template.post.helpers({
@@ -178,7 +181,6 @@ Template.post.helpers({
     const email = Meteor.users.findOne({ _id: id });
     const emailold = email && email.emails[0].verified;
     Session.set("statusicon", emailold);
-
     if (emailold === false) {
       return true;
     } else {
@@ -198,22 +200,20 @@ Template.post.events({
     event.preventDefault();
     const target = event.target;
     const text = target.text.value;
-
     if (target.text.value !== "") {
-      Meteor.call("tasks .insert", text);
+      Meteor.call("inserttasks", text);
     }
     target.text.value = "";
   },
   "click #delete"() {
-    return Meteor.call("tasks .delete", this._id);
+    return Meteor.call("deletetasks", this._id);
   },
   "click .toggle-checked"() {
-    return Meteor.call("tasks.checked", this._id, !this.checked);
+    return Meteor.call("checkedtasks", this._id, !this.checked);
   },
   "click #onBtn"() {
     Meteor.disconnect();
     Session.set("enemy", false);
-
     $("#offBtn").show();
     $("#onBtn").hide();
     console.log("Server is:-", Meteor.status().status);
@@ -235,14 +235,14 @@ Template.post.events({
     instance.state.set("hideCompleted", event.target.checked);
   },
   "click #toggle-private"() {
-    Meteor.call("tasks.private", this._id, !this.private);
+    Meteor.call("privatetasks", this._id, !this.private);
   },
   "submit #edit-task"(e) {
     e.preventDefault();
     const target = e.target;
     const edit = target.edit.value;
     const id = Session.get("id");
-    Meteor.call("task .update", id, edit);
+    Meteor.call("updatetasks", id, edit);
     $("#staticBackdrop").modal("hide");
   },
   "click button[name=updateclick]"(e) {
@@ -252,7 +252,6 @@ Template.post.events({
     $("#edit-email").hide();
     $("#edit-pass").hide();
     $("#fileuploadform").hide();
-
     const edit = e.target.id;
     Session.set("id", edit);
   },
@@ -265,12 +264,8 @@ Template.post.events({
     $("#edit-task").hide();
     $("#edit-email").hide();
     $("#edit-pass").hide();
-
-    // $("#")
   },
-
   "change #files"(e, r) {
- 
     const id = Meteor.userId();
     const file = $("#files").get(0).files[0];
     const filename = file.name;
@@ -279,8 +274,6 @@ Template.post.events({
     reader.onload = function () {
       Meteor.call("file-upload", file, reader.result, filename);
     };
-    // reader.readAsBinaryString(file);
-
     Meteor.call("filename", filename, id, function (error) {
       if (error) {
         alert(error.reason);
@@ -289,12 +282,47 @@ Template.post.events({
       }
     });
   },
+  "click #incompleteCount"() {
+    $("#staticBackdrop").modal("show");
+    $("#fileuploadform").hide();
+    $("#edit-email").hide();
+    $("#incomplete").show();
+    Session.set("boxname", "incomplete");
+    console.log("hello");
+    const incomplete = Tasks.find({ checked: false }).fetch();
+    Session.set("functionincomplete", incomplete);
+  },
+  "click #completedCount"() {
+    $("#staticBackdrop").modal("show");
+    $("#fileuploadform").hide();
+    $("#edit-email").hide();
+    $("#incomplete").hide();
+    $("#complete").show();
+    Session.set("boxname", "complete");
+    console.log("hello");
+    const complete = Tasks.find({ checked: true }).fetch();
+    Session.set("functionincomplete", complete);
+  },
+  "mouseenter #imagevarification"() {
+    const verify = Session.get("statusicon");
+    if (verify === false) {
+      $("#ptext").show(1000);
+    }
+  },
+  "mouseleave #imagevarification"() {
+    console.log("hello");
+    $("#ptext").hide(1000);
+  },
 });
 
+// --------------------------------------------login---------------------------------------------------------
+
 Template.login.onCreated(function () {
+  Meteor.subscribe("tasks");
   Session.set("pass", "password");
   Session.set("passin", "password");
 });
+
 Template.login.helpers({
   password: () => {
     return Session.get("pass");
@@ -308,10 +336,6 @@ Template.login.helpers({
   color: () => {
     return color();
   },
-});
-Template.login.onCreated(function () {
-  Meteor.subscribe("tasks");
-  // Session.set("checkemail", emailcheck);
 });
 
 Template.login.events({
@@ -334,16 +358,15 @@ Template.login.events({
           $("#login").hide();
           $("#logout").show();
           Meteor.setTimeout(function () {
-            Meteor._localStorage.removeItem('Meteor.userId');
-             Meteor._localStorage.removeItem('Meteor.loginToken');
-             Meteor._localStorage.removeItem('Meteor.loginTokenExpires');
-          },300000);
-          const email=Meteor.user().emails[0].verified
+            Meteor._localStorage.removeItem("Meteor.userId");
+            Meteor._localStorage.removeItem("Meteor.loginToken");
+            Meteor._localStorage.removeItem("Meteor.loginTokenExpires");
+          }, 300000);
+          const email = Meteor.user().emails[0].verified;
           console.log(email);
           if (email == false) {
             Meteor.call("varifiction");
           }
-          
         }
       });
     }
@@ -411,7 +434,6 @@ Template.login.events({
   },
   "click #back"() {
     $("#exampleModal").modal("hide");
-   
   },
   "click #wrong"() {
     $("#register-form").hide(1000);
@@ -425,25 +447,24 @@ Template.login.events({
   "submit #email"(e) {
     e.preventDefault();
     const email = $("input[name=emailvarifiction]").val();
-    email=""
     Accounts.forgotPassword({ email: email }, function (e, r) {
       if (e) {
         Session.set("alert", "invalidemail");
         Session.set("color", "unsuccess");
         loginalert();
       } else {
-       
         loginalert();
         Session.set("color", "success");
         $("#sigin").show(1000);
         $("#register-form").hide(1000);
         Session.set("alert", "sendemail");
-        
       }
     });
-    
   },
 });
+
+// ------------------------------------------model-------------------------------------------------------------
+
 Template.model.helpers({
   edittask: function (e) {
     const id = Session.get("id");
@@ -451,11 +472,11 @@ Template.model.helpers({
   },
   editemail: function (e) {
     const id = Session.get("emailid");
-   
+
     const email = Meteor.users.findOne({ _id: id });
-   
+
     const emailfullid = email.emails[0].address;
-  
+
     return emailfullid;
   },
   editdetails: () => {
@@ -466,13 +487,37 @@ Template.model.helpers({
     if (editdetails === "edittask") {
       return "Edit Task";
     }
-    if (editdetails === "edit-pass") return "Reset password";
+    if (editdetails === "edit-pass") {
+      return "Reset password";
+    }
+    if (editdetails == "incomplete") {
+      return "Incomplete Tasks";
+    }
+    if (editdetails == "complete") {
+      return "complete Tasks";
+    }
   },
   messages: () => {
     return messages();
   },
   color: () => {
     return color();
+  },
+  incomplete: () => {
+    const incompletevalue = Session.get("functionincomplete");
+    console.log(incompletevalue);
+    // if(incompletevalue=="")
+    // {
+    //   return "no data found"
+    // }else{
+    return incompletevalue;
+
+    // }
+  },
+  complete: () => {
+    const completevalue = Session.get("functionincomplete");
+    console.log(completevalue);
+    return completevalue;
   },
 });
 
@@ -523,7 +568,6 @@ Template.model.events({
         modelalert();
       }
     } else {
-      // alert("invalid email");
       Session.set("alert", "emailempty");
       Session.set("color", "unsuccess");
       modelalert();
@@ -574,12 +618,17 @@ Template.model.events({
     }
   },
 });
+
+// --------------------------------------------task--------------------------------------------------------------------------------
+
 Template.task.helpers({
   isOwner() {
     return this.owner === Meteor.userId();
   },
 });
 console.log("Server is:-", Meteor.status().status);
+
+// ------------------------------------------------status--------------------------------------------------
 
 Template.status.onCreated(function () {
   Session.set("enemy", true);
@@ -588,6 +637,8 @@ Template.status.onCreated(function () {
 Template.status.helpers({
   onstatus: () => Session.get("enemy"),
 });
+
+// ------------------------------------------------edit--------------------------------------------------
 
 Template.edit.onCreated(function () {
   Meteor.subscribe("tasks");
@@ -598,9 +649,9 @@ Template.edit.helpers({
     return Tasks.findOne({ _id: id });
   },
 });
-Template.edit.onCreated(function () {
-  Meteor.subscribe("tasks");
-});
+
+// ------------------------------------------------user--------------------------------------------------
+
 Template.user.helpers({
   username: function () {
     const id = FlowRouter.getParam("userid");
@@ -608,6 +659,18 @@ Template.user.helpers({
     return Meteor.users.findOne({ _id: id });
   },
 });
+
+Template.user.events({
+  "submit #view"(e) {
+    e.preventDefault();
+    const id = Meteor.userId();
+    const view = e.target.view.value;
+    Meteor.call("updateusername", id, view);
+    FlowRouter.go("/post");
+  },
+});
+
+// ------------------------------------------------main--------------------------------------------------
 
 Template.main.helpers({
   userid: () => {
@@ -650,11 +713,10 @@ Template.main.events({
     $("#fileuploadform").hide();
   },
   "click a[name=selectdelete]"() {
- 
     const username = Meteor.users.findOne(Meteor.userId()).username;
     const id = Tasks.find({ username: username, checked: true }).fetch();
-       id.map((item, r) => {
-      Meteor.call("selectdelete", item._id);
+    id.map((item, r) => {
+      Meteor.call("deletetasks", item._id);
     });
   },
   "click a[name=selectall]"(e) {
@@ -663,7 +725,6 @@ Template.main.events({
     uservalue.map((item, i) => {
       Meteor.call("selectall", item._id);
     });
-
   },
   "click a[name=disselectall]"(e) {
     const username = Meteor.users.findOne(Meteor.userId()).username;
@@ -671,24 +732,15 @@ Template.main.events({
     uservalue.map((item, i) => {
       Meteor.call("disselectall", item._id);
     });
-
   },
 });
 
-Template.user.events({
-  "submit #view"(e) {
-    e.preventDefault();
-    const id = Meteor.userId();
-    const view = e.target.view.value;
-    Meteor.call("task .view", id, view);
-    FlowRouter.go("/post");
-  },
-});
+// ----------------------------------serach------------------------------------------------------------------------------
 
 Template.search.events({
   "keyup #inputsearch"(e) {
     var value = $(e.target).val();
-   
+
     $(" #textsearch ")
       .parent()
       .filter(function () {
@@ -697,7 +749,8 @@ Template.search.events({
   },
 });
 
-Template.reset.onCreated(function () {});
+// ------------------------------------------reset------------------------------------------------------------------------------
+
 Template.reset.events({
   "submit #resetpassword"(e) {
     e.preventDefault();
@@ -726,13 +779,15 @@ Template.reset.events({
     }
   },
   "click #backreset"() {
-    
     FlowRouter.go("/post");
     $("#exampleModal").dal("show");
     $("#sigin").show(1000);
     $("#register-form").hide(1000);
   },
 });
+
+// -----------------------------------------layout-------------------------------------------------------------------------------
+
 Template.layout.helpers({
   messages: () => {
     return messages();
@@ -741,6 +796,8 @@ Template.layout.helpers({
     return color();
   },
 });
+
+// -----------------------------------------------verifyemail----------------------------------------------------------------------------------
 
 Template.verifyemail.events({
   "click #yes"(e) {
@@ -768,18 +825,8 @@ Template.verifyemail.events({
   },
 });
 
-// Template.verificationstatus.helpers(()=>{
-// const status=Session.get("Verificationstatus")
-// console.log(status);
-// icon=()=>{
-//   // if(status===false){
-//   //   return "fa fa-times"
-//   //   }
-//   //   return "fa fa-check"
-//   return "fa fa-times"
-// }
+// -------------------------------------verificarionstatus-------------------------------------------------------------------
 
-// })
 Template.Verificationstatus.helpers({
   icon: () => {
     const status = Session.get("statusicon");
@@ -797,6 +844,8 @@ Template.Verificationstatus.helpers({
 //     console.log("hello");
 //   },
 // });
+
+// ----------------------------------------------filename-----------------------------------------------------------------------------------
 
 Template.profile.helpers({
   profile: () => {
