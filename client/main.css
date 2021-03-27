@@ -149,17 +149,12 @@ li.checked {
 #alerticon {
   float: right;
 }
-/* #disselectall{
+#ptext{
   display:none
 }
-#selectall{
-  display:none
-} */
-/* #erroricon{
-  float :left
-} */
 .verification {
   padding-left: 58%;
+  display:-webkit-inline-box
 }
 a #selectall{
   color:white

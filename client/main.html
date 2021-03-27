@@ -67,7 +67,7 @@
       <div class="statusicon">{{>status}}<br />
        <br>
       </div>
-      <div class="verification">{{>Verificationstatus}}</div>
+      <div class="verification">{{>Verificationstatus}}<p id="ptext" style="background-color:lightcoral;border-radius: 10px;">Verifide your Account</p></div>
       <center>
         <h1>Hello..{{currentUser.username}}</h1>
       </center>
@@ -79,9 +79,9 @@
       <div class="loginbtn">{{>loginBtn}}</div>
       <br />
       {{#if currentUser}}
-      <strong>Incomplete Task:-<strong>{{incompleteCount}}</strong></strong>
+      <strong>Incomplete Task:-<strong id="incompleteCount">{{incompleteCount}}</strong></strong>
       <br />
-      <strong>Comaplete Task:-<strong>{{completedCount}}</strong></strong>
+      <strong>Comaplete Task:-<strong id="completedCount">{{completedCount}}</strong></strong>
       {{/if}}
       <br />
       <br />
@@ -288,6 +288,7 @@
                   placeholder="email address"
                   class="form-control"
                   type="email"
+                  
                 />
               </div>
             </div>
@@ -464,7 +465,26 @@
               </div>  
               </div>
           </form>
-
+          <form action="" id="incomplete">
+            <div class="modal-body">
+              <div class="mb-3">
+               <ul>
+               {{#each incomplete}} <li>{{text}}</li>{{/each}}
+               </ul>
+                  
+              </div>  
+              </div>
+          </form>
+          <form action="" id="complete">
+            <div class="modal-body">
+              <div class="mb-3">
+               <ul>
+               {{#each complete}} <li>{{text}}</li>{{/each}}
+               </ul>
+                  
+              </div>  
+              </div>
+          </form>
         </div>
       </div>
     </div>
@@ -668,9 +688,10 @@
   </div>
 </template>
 
+
 <!-- ----------------------------------------verificationstatus------------------ -->
 <template name="Verificationstatus">
-  <img src="{{icon}}" style="height: 20px" alt="close" />
+  <img src="{{icon}}" style="height: 20px" alt="close" id="imagevarification"/>
 </template>
 <!-- ----------------------------------------file------------------ -->
 <template name="file">
@@ -683,4 +704,16 @@
   <img src="./{{profile}}" style="height: 50px" alt="">
 </template>
 
+<!-- ----------------------------------------incomplete------------------ -->
+<template name="incomplete">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="incomplete">
+        {{incomplete}}
+        </h5>
+      </div>
+    </div>
+  </div>  
+</template>
 
