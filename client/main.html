@@ -51,7 +51,7 @@
         Verify Your Email Id
       </div>
       {{/if}} {{#if currentUser}}
-      <h1>Todo List</h1>
+      <h1>Tasks Manage</h1>
       {{else}}
       <center>
         <h1>Todos App</h1>
@@ -105,7 +105,7 @@
     class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}"
     id="li"
   >
-    {{currentUser.username}}:-
+    {{username}}:-
     {{#if isOwner}}
     <input
       type="checkbox"
@@ -190,7 +190,7 @@
         id="signinuser"
         placeholder="Username"
         required=""
-        autocomplete="off"
+        autofocus
         name="username"
       />
 
@@ -469,7 +469,7 @@
             <div class="modal-body">
               <div class="mb-3">
                <ul>
-               {{#each incomplete}} <li>{{text}}</li>{{/each}}
+               {{#each incomplete}} <li><strong>{{username}}:-</strong>{{text}}</li>{{/each}}
                </ul>
                   
               </div>  
@@ -479,7 +479,7 @@
             <div class="modal-body">
               <div class="mb-3">
                <ul>
-               {{#each complete}} <li>{{text}}</li>{{/each}}
+               {{#each complete}} <li><strong>{{username}}:-</strong>{{text}}</li>{{/each}}
                </ul>
                   
               </div>  
@@ -545,7 +545,7 @@
 <!-- ----------------------------------------edit------------------ -->
 <template name="edit">
   <div class="card text-center">
-    <div class="card-header">Todo data</div>
+    <div class="card-header">Tasks data</div>
     {{#if editjob._id}}
     <div class="card-body">
       <h5 class="card-title">{{editjob._id}}</h5>
