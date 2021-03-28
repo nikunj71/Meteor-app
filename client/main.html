@@ -54,7 +54,7 @@
       <h1>Tasks Manage</h1>
       {{else}}
       <center>
-        <h1>Todos App</h1>
+        <h1>Tasks manage</h1>
       </center>
       {{/if}} {{#if currentUser}}
       <div class="profile">{{>profile}}
@@ -121,7 +121,7 @@
       {{#if private}} Private {{else}} Public {{/if}}
     </button>
     {{/if}}
-    <div id="textsearch"><Strong>{{text}}</Strong>  Last Modify:-  {{Time}}  {{Date}}</div>
+    <div id="textsearch"><div class="col-md-5"><Strong>{{text}}</Strong></div>  <div class="lastmodify col-md-12 panel " style="color:lightslategrey">   Last Modify:-  {{Time}}  {{Date}}</div></div>
   </li>
 </template>
 
@@ -601,8 +601,8 @@
 <!-- ----------------------------------------Search------------------ -->
 <template name="search">
   <div class="input-group rounded">
-    <span class="input-group-text border-0" id="search-addon">
-      <i class="fas fa-search fa-2x"></i>
+    <span class="input-group-text border-0 " style="background: transparent;" id="search-addon">
+      <i class="fas fa-search fa-2x "></i>
     </span>
     <input
       type="search"
