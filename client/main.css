@@ -165,9 +165,10 @@ a #selectall{
 #incomplete{
   display:none
 }
-li.checked #textsearch {
+li.checked .col-md-5 {
   text-decoration: line-through;
 }
+
 
 li.private {
   background: #eee;
@@ -304,7 +305,7 @@ header .hide-completed {
   padding-top: 0%;
 }
 div#textsearch {
-  display: contents;
+  display: inline-flex;
 }
 /* ------------------------- */
 
