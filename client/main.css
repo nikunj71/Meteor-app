@@ -130,6 +130,7 @@ li.checked {
 }
 #loginalert {
   display: none;
+  
 }
 #eedit-email {
   display: none;
@@ -139,6 +140,7 @@ li.checked {
 }
 #layoutalert {
   display: none;
+  
 }
 #edit-pass {
   display: none;
@@ -150,7 +152,12 @@ li.checked {
   float: right;
 }
 #ptext{
-  display:none
+  display:none;
+  margin: 0px !important;
+}
+#ptext1{
+  display:none;
+  margin: 0px !important;
 }
 .verification {
   padding-left: 58%;
