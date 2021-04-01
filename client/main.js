@@ -1,55 +1,7 @@
+// import "../iron-router/main.js"
 import "./main.html";
 import "../lib/task.js";
-
-// -----------------------------router-------------------------
-
-FlowRouter.route("/", {
-  action: function () {
-    BlazeLayout.render("layout", { main: "home" });
-  },
-});
-
-FlowRouter.route("/login", {
-  action: function () {
-    BlazeLayout.render("layout", { main: "login" });
-  },
-});
-
-FlowRouter.route("/post", {
-  action: function () {
-    BlazeLayout.render("layout", { main: "post" });
-  },
-});
-
-FlowRouter.route("/pop", {
-  action: function (params) {
-    BlazeLayout.render("layout", { main: "popmain" });
-  },
-});
-
-FlowRouter.route("/tasks/:id", {
-  action: function () {
-    BlazeLayout.render("layout", { main: "edit" });
-  },
-});
-
-FlowRouter.route("/user/:userid", {
-  action: function () {
-    BlazeLayout.render("layout", { main: "user" });
-  },
-});
-FlowRouter.route("/reset-password/:token", {
-  action: function () {
-    BlazeLayout.render("layout", { main: "reset" });
-  },
-});
-
-FlowRouter.route("/verify-email/:tokenemail", {
-  action: function () {
-    BlazeLayout.render("layout", { main: "verifyemail" });
-  },
-});
-
+import "./route/route.js"
 // --------------------------comman-function------------------------
 
 layoutalert = () => {
@@ -158,7 +110,7 @@ Template.post.helpers({
     if (instance.state.get("hideCompleted")) {
       return Tasks.find(
         { checked: { $ne: true } },
-        { sort: { createdAt: -1 } }
+        { sort: { CreatedAt: -1 } }
       );
     }
     return Tasks.find({}, { sort: { CreatedAt: -1 } });
@@ -315,9 +267,14 @@ Template.post.events({
     if (verify === false) {
       $("#ptext").show(1000);
     }
+    else{
+      $("#ptext1").show(1000);
+    }
   },
   "mouseleave #imagevarification"() {
     $("#ptext").hide(1000);
+    $("#ptext1").hide(1000);
+
   },
 });
 
@@ -363,11 +320,11 @@ Template.login.events({
           $("#exampleModal").modal("hide");
           $("#login").hide();
           $("#logout").show();
-          Meteor.setTimeout(function () {
-            Meteor._localStorage.removeItem("Meteor.userId");
-            Meteor._localStorage.removeItem("Meteor.loginToken");
-            Meteor._localStorage.removeItem("Meteor.loginTokenExpires");
-          }, 300000);
+          // Meteor.setTimeout(function () {
+          //   Meteor._localStorage.removeItem("Meteor.userId");
+          //   Meteor._localStorage.removeItem("Meteor.loginToken");
+          //   Meteor._localStorage.removeItem("Meteor.loginTokenExpires");
+          // }, 30000);
           const email = Meteor.user().emails[0].verified;
           if (email == false) {
             Meteor.call("varifiction");
@@ -741,8 +698,7 @@ Template.main.events({
 
 Template.search.events({
   "keyup #inputsearch"(e) {
-    var value = $(e.target).val();
-
+    var value = $(e.target).val().toLowerCase();
     $(" #textsearch ")
       .parent()
       .filter(function () {

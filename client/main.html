@@ -57,17 +57,28 @@
         <h1>Tasks manage</h1>
       </center>
       {{/if}} {{#if currentUser}}
-      <div class="profile">{{>profile}}
-        {{time}}
-        <br>
+      <div class="profile">
+        {{>profile}} {{time}}
+        <br />
         <!-- <a name="resetemail" id="fileupload" class="btn btn-primary">profile</a> -->
       </div>
-     
-     
-      <div class="statusicon">{{>status}}<br />
-       <br>
+
+      <div class="statusicon">
+        {{>status}}<br />
+        <br />
       </div>
-      <div class="verification">{{>Verificationstatus}}<p id="ptext" style="background-color:lightcoral;border-radius: 10px;">Verifide your Account</p></div>
+      <div class="verification">
+        {{>Verificationstatus}}
+        <p id="ptext" style="background-color: lightcoral; border-radius: 10px">
+          Verifide your Account
+        </p>
+        <p
+          id="ptext1"
+          style="background-color: lightskyblue; border-radius: 10px"
+        >
+          Verified
+        </p>
+      </div>
       <center>
         <h1>Hello..{{currentUser.username}}</h1>
       </center>
@@ -79,9 +90,17 @@
       <div class="loginbtn">{{>loginBtn}}</div>
       <br />
       {{#if currentUser}}
-      <strong>Incomplete Task:-<strong id="incompleteCount">{{incompleteCount}}</strong></strong>
+      <strong
+        >Incomplete Task:-<strong id="incompleteCount"
+          >{{incompleteCount}}</strong
+        ></strong
+      >
       <br />
-      <strong>Comaplete Task:-<strong id="completedCount">{{completedCount}}</strong></strong>
+      <strong
+        >Comaplete Task:-<strong id="completedCount"
+          >{{completedCount}}</strong
+        ></strong
+      >
       {{/if}}
       <br />
       <br />
@@ -105,8 +124,7 @@
     class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}"
     id="li"
   >
-    {{username}}:-
-    {{#if isOwner}}
+    {{username}}:- {{#if isOwner}}
     <input
       type="checkbox"
       id="checkid"
@@ -121,7 +139,12 @@
       {{#if private}} Private {{else}} Public {{/if}}
     </button>
     {{/if}}
-    <div id="textsearch"><div class="col-md-5"><Strong>{{text}}</Strong></div>  <div class="lastmodify col-md-12 panel " style="color:lightslategrey">   Last Modify:-  {{Time}}  {{Date}}</div></div>
+    <div id="textsearch">
+      <div class="col-md-5"><strong>{{text}}</strong></div>
+      <div class="lastmodify col-md-12 panel" style="color: lightslategrey">
+        Last Modify:- {{Time}} {{Date}}
+      </div>
+    </div>
   </li>
 </template>
 
@@ -135,17 +158,31 @@
   <button id="onBtn" class="btn btn-primary">
     <i class="fa fa-power-off" aria-hidden="true"></i>
   </button>
-  <a href="/user/{{userid}}" class="btn btn-primary">Change username</a> 
-  <a name="resetemail" class="btn btn-primary" style="color: white;">Change Email</a>
-  <a name="resetpass" class="btn btn-primary" style="color: white;">Reset Password</a>
-  <a name="selectdelete" class="btn btn-primary" style="color: white;">Delete</a>
+  <a href="/user/{{userid}}" class="btn btn-primary">Change username</a>
+  <a name="resetemail" class="btn btn-primary" style="color: white"
+    >Change Email</a
+  >
+  <a name="resetpass" class="btn btn-primary" style="color: white"
+    >Reset Password</a
+  >
+  <a name="selectdelete" class="btn btn-primary" style="color: white">Delete</a>
   {{#if selectbtn}}
-  <a name="selectall" id="selectall" class="btn btn-primary" style="color: white;">Select All</a>
+  <a
+    name="selectall"
+    id="selectall"
+    class="btn btn-primary"
+    style="color: white"
+    >Select All</a
+  >
   {{else}}
-  <a name="disselectall" id="disselectall" class="btn btn-primary" style="color: white;">Disselect All</a>
+  <a
+    name="disselectall"
+    id="disselectall"
+    class="btn btn-primary"
+    style="color: white"
+    >Disselect All</a
+  >
   {{/if}}
-
-
 
   <br />
   <br />
@@ -288,7 +325,6 @@
                   placeholder="email address"
                   class="form-control"
                   type="email"
-                  
                 />
               </div>
             </div>
@@ -370,45 +406,45 @@
               <button type="submit" class="btn btn-primary">Save change</button>
             </div>
           </form>
-            <form action="" id="edit-email">
-              <div class="modal-body">
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label"
-                    >current Email</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="current"
-                    value=""
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label"
-                    >Email change</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="new"
-                    value=""
-                    aria-describedby="emailHelp"
-                  />
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="reset"
-                  id="backreset"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
+          <form action="" id="edit-email">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label"
+                  >current Email</label
                 >
-                  Close
-                </button>
-                <button type="submit" class="btn btn-primary">Save change</button>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="current"
+                  value=""
+                  aria-describedby="emailHelp"
+                />
               </div>
-            </form>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label"
+                  >Email change</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="new"
+                  value=""
+                  aria-describedby="emailHelp"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="reset"
+                id="backreset"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">Save change</button>
+            </div>
+          </form>
 
           <form action="" id="edit-pass">
             <div class="modal-body">
@@ -460,30 +496,34 @@
           <form action="" id="fileuploadform">
             <div class="modal-body">
               <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Choose Profile</label>
-                  <div>{{>file}}</div>
-              </div>  
+                <label for="exampleInputEmail1" class="form-label"
+                  >Choose Profile</label
+                >
+                <div>{{>file}}</div>
               </div>
+            </div>
           </form>
           <form action="" id="incomplete">
             <div class="modal-body">
               <div class="mb-3">
-               <ul>
-               {{#each incomplete}} <li><strong>{{username}}:-</strong>{{text}}</li>{{/each}}
-               </ul>
-                  
-              </div>  
+                <ul>
+                  {{#each incomplete}}
+                  <li><strong>{{username}}:-</strong>{{text}}</li>
+                  {{/each}}
+                </ul>
               </div>
+            </div>
           </form>
           <form action="" id="complete">
             <div class="modal-body">
               <div class="mb-3">
-               <ul>
-               {{#each complete}} <li><strong>{{username}}:-</strong>{{text}}</li>{{/each}}
-               </ul>
-                  
-              </div>  
+                <ul>
+                  {{#each complete}}
+                  <li><strong>{{username}}:-</strong>{{text}}</li>
+                  {{/each}}
+                </ul>
               </div>
+            </div>
           </form>
         </div>
       </div>
@@ -495,7 +535,9 @@
 
 <template name="loginBtn">
   {{#if currentUser}}
-  <button id="logout" class="btn btn-primary"><i class="fas fa-sign-out-alt"></i>Logout</button>
+  <button id="logout" class="btn btn-primary">
+    <i class="fas fa-sign-out-alt"></i>Logout
+  </button>
   {{else}}
   <button
     id="login"
@@ -503,7 +545,7 @@
     data-bs-toggle="modal"
     data-bs-target="#exampleModal"
   >
-  <i class="fas fa-sign-out-alt"></i> Login
+    <i class="fas fa-sign-out-alt"></i> Login
   </button>
   {{/if}}
 </template>
@@ -601,8 +643,12 @@
 <!-- ----------------------------------------Search------------------ -->
 <template name="search">
   <div class="input-group rounded">
-    <span class="input-group-text border-0 " style="background: transparent;" id="search-addon">
-      <i class="fas fa-search fa-2x "></i>
+    <span
+      class="input-group-text border-0"
+      style="background: transparent"
+      id="search-addon"
+    >
+      <i class="fas fa-search fa-2x"></i>
     </span>
     <input
       type="search"
@@ -688,20 +734,19 @@
   </div>
 </template>
 
-
 <!-- ----------------------------------------verificationstatus------------------ -->
 <template name="Verificationstatus">
-  <img src="{{icon}}" style="height: 20px" alt="close" id="imagevarification"/>
+  <img src="{{icon}}" style="height: 20px" alt="close" id="imagevarification" />
 </template>
 <!-- ----------------------------------------file------------------ -->
 <template name="file">
-<input class="form-control" type="file" id="files" />
+  <input class="form-control" type="file" id="files" />
 </template>
 
 <!-- ----------------------------------------profile------------------ -->
 
 <template name="profile">
-  <img src="./{{profile}}" style="height: 50px" alt="">
+  <img src="./{{profile}}" style="height: 50px" alt="" />
 </template>
 
 <!-- ----------------------------------------incomplete------------------ -->
@@ -709,11 +754,8 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="incomplete">
-        {{incomplete}}
-        </h5>
+        <h5 class="modal-title" id="incomplete">{{incomplete}}</h5>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
-
