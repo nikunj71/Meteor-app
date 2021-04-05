@@ -1,0 +1,10 @@
+{
+    "public": {
+      "Root": {
+        "URL": "https://stackoverflow.com"
+     }
+    },
+    "stripe": {
+      "s_key": "sk_test_32uin...2nio"
+    }
+  }

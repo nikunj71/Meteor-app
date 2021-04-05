@@ -1,0 +1,16 @@
+<template name="loginBtn">
+    {{#if currentUser}}
+    <button id="logout" class="btn btn-primary logout">
+      <i class="fas fa-sign-out-alt"></i>Logout
+    </button>
+    {{else}}
+    <button
+      id="login"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      <i class="fas fa-sign-out-alt"></i> Login
+    </button>
+    {{/if}}
+  </template>

@@ -1,0 +1,189 @@
+
+  <template name="model">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">{{>login}}</div>
+      </div>
+    </div>
+  
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="{{color}}" role="alert" id="modelalert">{{messages}}</div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">{{editdetails}}</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form action="" class="edit-task" id="edit-task">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Text</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="edit"
+                    id="{{edittask._id}}"
+                    value="{{edittask.text}}"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary">Save change</button>
+              </div>
+            </form>
+            <form action="" class="edit-email" id="edit-email">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >current Email</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="current"
+                    value=""
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >Email change</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="new"
+                    value=""
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="reset"
+                  id="backreset"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary">Save change</button>
+              </div>
+            </form>
+  
+            <form action="" class="edit-pass" id="edit-pass">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >Old Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="oldpass"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >New Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="newpass"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >Re-Password</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="conpass"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="reset"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary">Save change</button>
+              </div>
+            </form>
+            <form action="" id="fileuploadform">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >Choose Profile</label
+                  >
+                  <div>{{>file}}</div>
+                </div>
+              </div>
+            </form>
+            <form action="" id="incomplete">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <ul>
+                    {{#each incomplete}}
+                    <li><strong>{{username}}:-</strong>{{text}}</li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+            </form>
+            <form action="" id="complete">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <ul>
+                    {{#each complete}}
+                    <li><strong>{{username}}:-</strong>{{text}}</li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+    
