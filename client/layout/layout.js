@@ -1,10 +1,9 @@
-import "./layout.html"
+import "./layout.html";
 Template.layout.helpers({
-    messages: () => {
-      return messages();
-    },
-    color: () => {
-      return color();
-    },
-  });
-  
+  messages: () => {
+    return messages();
+  },
+  color: () => {
+    return color();
+  },
+});

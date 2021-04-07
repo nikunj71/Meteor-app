@@ -1,77 +1,65 @@
 <template name="post">
-    <div class="container" id="containerid">
-      <header>
-        {{#if verificationstatus}}
-        <div class="alert alert-danger" role="alert" id="layout">
-          <i class="fas fa-exclamation-circle" id="erroricon"></i>
-          <i class="fa fa-times" aria-hidden="true" id="alerticon"></i>
-          Verify Your Email Id
-        </div>
-        {{/if}} {{#if currentUser}}
-        <h1>Tasks Manage</h1>
-        {{else}}
-        <center>
-          <h1>Tasks manage</h1>
-        </center>
-        {{/if}} {{#if currentUser}}
-        <div class="profile">
-          {{>profile}} {{time}}
-          <br />
-          <!-- <a name="resetemail" id="fileupload" class="btn btn-primary">profile</a> -->
-        </div>
-  
-        <div class="statusicon">
-          {{>status}}<br />
-          <br />
-        </div>
-        <div class="verification">
-          {{>Verificationstatus}}
-          <p id="ptext" style="background-color: lightcoral; border-radius: 10px">
-            Verifide your Account
-          </p>
-          <p
-            id="ptext1"
-            style="background-color: lightskyblue; border-radius: 10px"
-          >
-            Verified
-          </p>
-        </div>
-        <center>
-          <h1>Hello..{{currentUser.username}}</h1>
-        </center>
-        <label class="hide-completed">
-          <input type="checkbox" />
-          Hide Completed Tasks
-        </label>
-        {{/if}}
-        <div class="loginbtn">{{>loginBtn}}</div>
+  <div class="container" id="containerid">
+    <header>
+      {{#if verificationstatus}}
+      <div class="alert alert-danger layout" role="alert">
+        <i class="fas fa-exclamation-circle" id="erroricon"></i>
+        <i class="fa fa-times alerticon" aria-hidden="true"></i>
+        Verify Your Email Id
+      </div>
+      {{/if}} {{#if currentUser}}
+      <h1>Tasks Manage</h1>
+      {{else}}
+      <center>
+        <h1>Tasks manage</h1>
+      </center>
+      {{/if}} {{#if currentUser}}
+      <div class="profile">
+        {{>profile}} {{time}}
         <br />
-        {{#if currentUser}}
-        <strong
-          >Incomplete Task:-<strong id="incompleteCount"
-            >{{incompleteCount}}</strong
-          ></strong
-        >
+        <!-- <a name="resetemail" id="fileupload" class="btn btn-primary">profile</a> -->
+      </div>
+
+      <div class="statusicon">
+        {{>status}}<br />
         <br />
-        <strong
-          >Comaplete Task:-<strong id="completedCount"
-            >{{completedCount}}</strong
-          ></strong
-        >
-        {{/if}}
-        <br />
-        <br />
-        {{>main}} {{>model}} {{#if currentUser}}
-        <form action="" class="new-task">
-          <input type="text" name="text" placeholder="insert todos" id="text" />
-        </form>
-        {{/if}}
-      </header>
-      {{#if currentUser}}
-      <ul>
-        {{#each tasks}} {{> task}} {{/each}}
-      </ul>
+      </div>
+      <div class="verification">
+        {{>Verificationstatus}}
+        <p class="ptext" style="background-color: lightcoral; border-radius: 10px">
+          Verifide your Account
+        </p>
+        <p class="ptext1" style="background-color: lightskyblue; border-radius: 10px">
+          Verified
+        </p>
+      </div>
+      <center>
+        <h1>Hello..{{currentUser.username}}</h1>
+      </center>
+      <label class="hide-completed">
+        <input type="checkbox" />
+        Hide Completed Tasks
+      </label>
       {{/if}}
-    </div>
-  </template>
-  
+      <div class="loginbtn">{{>loginBtn}}</div>
+      <br />
+      {{#if currentUser}}
+      <strong>Incomplete Task:-<strong class="incompleteCount">{{incompleteCount}}</strong></strong>
+      <br />
+      <strong>Comaplete Task:-<strong class="completedCount">{{completedCount}}</strong></strong>
+      {{/if}}
+      <br />
+      <br />
+      {{>main}} {{>model}} {{#if currentUser}}
+      <form action="" class="new-task">
+        <input type="text" name="text" placeholder="insert todos" id="text" />
+      </form>
+      {{/if}}
+    </header>
+    {{#if currentUser}}
+    <ul>
+      {{#each tasks}} {{> task}} {{/each}}
+    </ul>
+    {{/if}}
+  </div>
+</template>

@@ -28,10 +28,16 @@ body {
   min-height: 100%;
   background: white;
 }
-#eye1 {
+.eye1 {
   display: none;
 }
-#eyein1 {
+.eye {
+  display: none;
+}
+.eyein {
+  display: none !important;
+}
+.eyein1 {
   display: none;
 }
 header {
@@ -85,7 +91,7 @@ ul {
   position: relative;
   margin-right: 1%;
 }
-button[name="updateclick"] {
+.updateclick {
   float: right;
   font-weight: bold;
   position: relative;
@@ -93,14 +99,14 @@ button[name="updateclick"] {
 
   /* margin-right: 5px; */
 }
-#register-form {
+.register-form {
   display: none;
 }
 /* #resetpassword{
   display: none;
 } */
-.profile{
-float:right;
+.profile {
+  float: right;
 }
 img {
   border-radius: 50%;
@@ -130,7 +136,6 @@ li.checked {
 }
 #loginalert {
   display: none;
-  
 }
 #eedit-email {
   display: none;
@@ -140,7 +145,6 @@ li.checked {
 }
 #layoutalert {
   display: none;
-  
 }
 #edit-pass {
   display: none;
@@ -148,34 +152,33 @@ li.checked {
 #modelalert {
   display: none;
 }
-#alerticon {
+.alerticon {
   float: right;
 }
-#ptext{
-  display:none;
+.ptext {
+  display: none;
   margin: 0px !important;
 }
-#ptext1{
-  display:none;
+.ptext1 {
+  display: none;
   margin: 0px !important;
 }
 .verification {
   padding-left: 58%;
-  display:-webkit-inline-box
+  display: -webkit-inline-box;
 }
-a #selectall{
-  color:white
+a .selectall {
+  color: white;
 }
-#complete{
-  display:none
+.complete {
+  display: none;
 }
-#incomplete{
-  display:none
+.incomplete {
+  display: none;
 }
 li.checked .col-md-5 {
   text-decoration: line-through;
 }
-
 
 li.private {
   background: #eee;
@@ -291,7 +294,7 @@ header .hide-completed {
   width: 210px !important;
   margin: 0 auto;
 }
-#signup {
+.signup {
   display: none;
 }
 /* #logout{
@@ -311,7 +314,7 @@ header .hide-completed {
   padding-left: 93%;
   padding-top: 0%;
 }
-div#textsearch {
+div.textsearch {
   display: inline-flex;
 }
 /* ------------------------- */

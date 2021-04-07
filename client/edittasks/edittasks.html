@@ -1,13 +1,12 @@
 <template name="edit">
-    <div class="card text-center">
-      <div class="card-header">Tasks data</div>
-      {{#if editjob._id}}
-      <div class="card-body">
-        <h5 class="card-title">{{editjob._id}}</h5>
-        <p class="card-text">{{editjob.username}}</p>
-        <a href="#" class="btn btn-primary">{{editjob.text}}</a>
-      </div>
-      <div class="card-footer text-muted">{{editjob.createdAt}}</div>
-      {{else}} {{>error}} {{/if}}
+  <div class="card text-center">
+    <div class="card-header">Tasks data</div>
+    {{#if editjob._id}}
+    <div class="card-body">
+      <h5 class="card-title">{{editjob._id}}</h5>
+      <p class="card-text">{{editjob.username}}</p>
+      <a href="#" class="btn btn-primary">{{editjob.text}}</a>
     </div>
-  </template>
+    {{else}} {{>error}} {{/if}}
+  </div>
+</template>
