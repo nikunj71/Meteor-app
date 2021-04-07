@@ -4,9 +4,9 @@ Template.main.helpers({
     return Meteor.userId();
   },
   selectbtn: () => {
-    const username = Meteor.user().username;
+   
     const uservalue = Tasks.find(
-      { username: username },
+      { owner: Meteor.userId() },
       { fields: { _id: 1, checked: 1 } }
     ).fetch();
     var selectitem = "";
@@ -55,9 +55,8 @@ Template.main.events({
     $(".complete").hide();
   },
   "click .selectdelete"() {
-    const username = Meteor.users.findOne(Meteor.userId()).username;
     const id = Tasks.find(
-      { username: username, checked: true },
+      {owner:Meteor.userId(), checked: true },
       { fields: { _id: 1 } }
     ).fetch();
     id.map((item, r) => {
@@ -65,10 +64,9 @@ Template.main.events({
     });
   },
   "click .selectall"(e) {
-    console.log("hello");
-    const username = Meteor.users.findOne(Meteor.userId()).username;
+ 
     const uservalue = Tasks.find(
-      { username: username },
+      { owner: Meteor.userId() },
       { fields: { _id: 1 } }
     ).fetch();
 
@@ -77,9 +75,9 @@ Template.main.events({
     });
   },
   "click .disselectall"(e) {
-    const username = Meteor.users.findOne(Meteor.userId()).username;
+    
     const uservalue = Tasks.find(
-      { username: username },
+      { owner: Meteor.userId() },
       { fields: { _id: 1 } }
     ).fetch();
 
