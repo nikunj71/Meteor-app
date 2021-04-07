@@ -13,7 +13,6 @@ Template.main.helpers({
     uservalue.map((item, i) => {
       selectitem = item.checked;
     });
-    console.log(selectitem);
     if (selectitem == true) {
       return false;
     } else if (selectitem == false) {
@@ -25,7 +24,7 @@ Template.main.helpers({
 });
 
 Template.main.events({
-  "click .resetemailselectall"(e) {
+  "click .resetemail"(e) {
     const id = Meteor.userId();
     Session.set("emailid", id);
     Session.set("boxname", "edit-email");
