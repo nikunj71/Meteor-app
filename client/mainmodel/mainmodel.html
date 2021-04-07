@@ -1,40 +1,24 @@
 <template name="main">
-    {{#if currentUser}}
-    <button id="offBtn" class="btn btn-primary offBtn">
-      <i class="fa fa-power-off" aria-hidden="true"></i>
-    </button>
-    <button id="onBtn" class="btn btn-primary onBtn">
-      <i class="fa fa-power-off" aria-hidden="true"></i>
-    </button>
-  
-    <a class="btn btn-primary usernamechange">Change username</a>
-  
-    <a name="resetemail" class="btn btn-primary" style="color: white"
-      >Change Email</a
-    >
-    <a name="resetpass" class="btn btn-primary" style="color: white"
-      >Reset Password</a
-    >
-    <a name="selectdelete" class="btn btn-primary" style="color: white">Delete</a>
-    {{#if selectbtn}}
-    <a
-      name="selectall"
-      id="selectall"
-      class="btn btn-primary"
-      style="color: white"
-      >Select All</a
-    >
-    {{else}}
-    <a
-      name="disselectall"
-      id="disselectall"
-      class="btn btn-primary"
-      style="color: white"
-      >Disselect All</a
-    >
-    {{/if}}
-  
-    <br />
-    <br />
-    {{>search}} {{/if}} {{theEnemy}}
-  </template>
+  {{#if currentUser}}
+  <button id="offBtn" class="btn btn-primary offBtn">
+    <i class="fa fa-power-off" aria-hidden="true"></i>
+  </button>
+  <button id="onBtn" class="btn btn-primary onBtn">
+    <i class="fa fa-power-off" aria-hidden="true"></i>
+  </button>
+
+  <a class="btn btn-primary usernamechange">Change username</a>
+
+  <a class="btn btn-primary resetemail" style="color: white">Change Email</a>
+  <a class="btn btn-primary resetpasswordBtn resetpass" style="color: white">Reset Password</a>
+  <a class="btn btn-primary selectdelete" style="color: white">Delete</a>
+  {{#if selectbtn}}
+  <a class="btn btn-primary selectall" style="color: white">Select All</a>
+  {{else}}
+  <a class="btn btn-primary disselectall" style="color: white">Disselect All</a>
+  {{/if}}
+
+  <br />
+  <br />
+  {{>search}} {{/if}} {{theEnemy}}
+</template>

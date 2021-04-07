@@ -30,5 +30,5 @@ aldeed:simple-schema
 email
 server-render
 ostrio:files
-cfs:standard-packages
 ddp-rate-limiter
+npm-bcrypt
