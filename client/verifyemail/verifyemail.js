@@ -19,6 +19,7 @@ Template.verifyemail.events({
   },
   "click .no"() {
     FlowRouter.go("post");
+    window.close()
     Session.set("color", "unsuccess");
     Session.set("alert", "unverify");
     layoutalert();

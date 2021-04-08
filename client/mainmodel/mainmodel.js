@@ -40,9 +40,9 @@ Template.main.events({
     const userid = Meteor.userId();
     FlowRouter.go(`/user/${userid}`);
     // console.log("Root")
-    // const Root = Meteor.settings.public.Root.URL;
+    const Root = Meteor.settings.public.Root.URL;
 
-    // window.open(`${Root}/nikunj71/Meteor-app`)
+    window.open(`${Root}/nikunj71/Meteor-app`)
   },
   "click .resetpasswordBtn"(e) {
     Session.set("boxname", "edit-pass");
