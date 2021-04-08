@@ -1,14 +1,15 @@
 {
-    "public": {
-      "Root": {
-        "URL": "https://github.com"
-     },
-     "Mailgun":{
-       "USERNAME":"postmaster@sandbox392af3d0a06c435ab51b236bba97d1e9.mailgun",
-       "PASSWORD":"7fe0bdb211afd19cf73f0b8622538818-b6d086a8-d6a7e51f@smtp.mailgun.org:587"
-     }
-
-     
-     
+  "public": {
+    "Root": {
+      "URL": "https://github.com",
+      "staleSessionInactivityTimeout": 1800000,
+      "staleSessionHeartbeatInterval": 180000,
+      "staleSessionPurgeInterval": 60000,
+      "staleSessionActivityEvents": "mousemove click keydown"
+    },
+    "Mailgun": {
+      "USERNAME": "postmaster@sandbox392af3d0a06c435ab51b236bba97d1e9.mailgun",
+      "PASSWORD": "7fe0bdb211afd19cf73f0b8622538818-b6d086a8-d6a7e51f@smtp.mailgun.org:587"
     }
   }
+}

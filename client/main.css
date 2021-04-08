@@ -32,7 +32,7 @@ body {
   display: none;
 }
 .eye {
-  display: none;
+  display: none !important;
 }
 .eyein {
   display: none !important;

@@ -35,7 +35,6 @@ Template.model.helpers({
     
     incomplete: () => {
       const incompletevalue = Session.get("functionincomplete");
-      console.log(incompletevalue)
       return incompletevalue;
     },
 
@@ -51,7 +50,7 @@ Template.model.helpers({
       e.preventDefault();
       const emailold = Meteor.user().emails[0].address
       
-      console.log(emailold)
+      console.log()
       const emailcurrent = e.target.current.value;
       const emailnew = e.target.new.value;
   
@@ -59,7 +58,7 @@ Template.model.helpers({
         if (emailcurrent === emailold) {
           if (emailnew !== "") {
             if (emailnew && emailnew !== emailcurrent) {
-              Meteor.call("addemail", id, emailnew, emailcurrent, function (e) {
+              Meteor.call("addemail", Meteor.userId(), emailnew, emailcurrent, function (e) {
                 if (e) {
                   Session.set("alert", "Meteor.reason");
                   Session.set("namealert", error.reason);
@@ -67,11 +66,11 @@ Template.model.helpers({
                   modelalert();
                 } else {
                   $(".staticBackdrop").modal("hide");
-  
                   layoutalert();
                   Session.set("alert", "emailmeass");
                   Session.set("color", "success");
                   Meteor.call("varifiction");
+                  console.log("hello")
                 }
               });
             } else {

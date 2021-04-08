@@ -61,6 +61,7 @@ Template.login.events({
           $(".exampleModal").modal("hide");
           $(".login").hide();
           $(".logout").show();
+          localStorage.setItem("Meteoredid",Meteor.userId())
           // Meteor.setTimeout(function () {
           //   Meteor._localStorage.removeItem("Meteor.userId");
           //   Meteor._localStorage.removeItem("Meteor.loginToken");

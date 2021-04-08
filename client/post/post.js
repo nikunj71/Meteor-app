@@ -1,5 +1,6 @@
 import "./post.html";
 
+// localStorage.setItem("login",false)
 Template.post.onCreated(function () {
   const tmp = this;
   tmp.state = new ReactiveDict();
@@ -10,12 +11,30 @@ Template.post.onCreated(function () {
   setTimeout(function () {
     $(".layout").fadeOut(1000);
   }, 5000);
+  
+  var check=localStorage.getItem("login")
+  console.log(check)
+ if(check==="false")
+ {
+  return Meteor.logout() 
+ }
+ 
+  
 });
+
 
 Template.post.onRendered(() => {
   if (!Meteor.userId()) {
     loginmodel();
   }
+
+
+ 
+  console.log("hello")
+  // console.log(localStorage.getItem("Meteor.userId"));
+  // if (localStorage.getItem("Meteoredid") === null) {
+  //   Meteor.logout();
+  // }
 });
 
 Template.post.helpers({
@@ -92,6 +111,9 @@ Template.post.events({
   "click .logout"(e) {
     e.preventDefault();
     Meteor.logout();
+  localStorage.setItem("login",false)
+
+
     $(".login").show();
     $(".logout").hide();
   },

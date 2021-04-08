@@ -1,10 +1,8 @@
 <template name="login">
   <div id="logreg-forms">
     <div class="{{color}}" role="alert" id="loginalert">{{messages}}</div>
-
     <form id="sigin" class="form-signin sigin">
       <button type="button" class="btn-close back" id="back" style="float: right" aria-label="Close"></button>
-
       <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">
         Sign in
       </h1>
@@ -19,10 +17,8 @@
       <p style="text-align: center">OR</p>
       <input type="text" class="form-control" id="signinuser" placeholder="Username" required="" autofocus
         name="username" />
-
       <div class="input-group mb-3">
         <input type="{{passwordin}}" class="form-control" placeholder="password" required name="password" />
-
         <span class="input-group-text eyein"><i class="fa fa-eye" aria-hidden="true"></i></span>
         <span class="input-group-text eyein1"><i class="fa fa-eye" aria-hidden="true"></i></span>
       </div>
@@ -39,7 +35,6 @@
       <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">
         Sign Up
       </h1>
-
       <input type="text" class="form-control" placeholder="Username" required="" name="username" />
       <input type="text" class="form-control" placeholder="@gmail.com" required="" name="email" />
       <div class="input-group mb-3">
@@ -47,7 +42,6 @@
         <span class="input-group-text eye"><i class="fa fa-eye" aria-hidden="true"></i></span>
         <span class="input-group-text eye1"><i class="fa fa-eye" aria-hidden="true"></i></span>
       </div>
-
       <button class="btn btn-success btn-block" type="submit">
         <i class="fas fa-sign-in-alt"></i> Sign in
       </button>
