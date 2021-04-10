@@ -1,14 +1,12 @@
 import "./verifyemail.html";
 Template.verifyemail.events({
-  "click .yes"(e) {
+  "click .yes"() {
     const token = FlowRouter.getParam("tokenemail");
     Accounts.verifyEmail(token, function (e) {
       if (e) {
-        alert(error.reason);
-        // Session.set("alert", "Meteor.reason");
-        // Session.set("namealert", error.reason);
-        // Session.set("color", "unsuccess");
-        // loginalert();
+        Session.set("alert", "verifyemail");
+        Session.set("color", "unsuccess");
+        layoutalert();
       } else {
         FlowRouter.go("post");
         Session.set("color", "success");

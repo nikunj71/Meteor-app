@@ -1,4 +1,5 @@
 import "./layout.html";
+
 Template.layout.helpers({
   messages: () => {
     return messages();

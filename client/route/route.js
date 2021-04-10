@@ -36,7 +36,6 @@ FlowRouter.route("/tasks/:id", {
 FlowRouter.route("/user/:userid", {
   name: "user",
   action: function (params) {
-    console.log(params);
     BlazeLayout.render("layout", { main: "user" });
   },
 });

@@ -21,17 +21,17 @@ import "./loginBtn/loginBtn.html";
 
 // ----------------------------------------------filename-----------------------------------------------------------------------------------
 
-Template.profile.helpers({
-  profile: () => {
-    const filename = Session.get("filename");
+// Template.profile.helpers({
+//   profile: () => {
+//     const filename = Session.get("filename");
 
-    // console.log(filename);
-    // const id=Meteor.userId()
-    // console.log(id);
-    // const data=Meteor.user()
-    // console.log(data);
-    return filename;
-  },
-});
-// const  fs = Npm.require('fs');
-// console.log("hello")
+//     // console.log(filename);
+//     // const id=Meteor.userId()
+//     // console.log(id);
+//     // const data=Meteor.user()
+//     // console.log(data);
+//     return filename;
+//   },
+// });
+// // const  fs = Npm.require('fs');
+// // console.log("hello")

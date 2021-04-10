@@ -1,9 +1,4 @@
 import "./reset-password.html";
-// Template.reset.onRendered ( ()=> {
-//  console.log("hello")
-//     loginmodel();
-
-// });
 
 Template.reset.events({
   "submit .resetpassword"(e) {
@@ -14,9 +9,10 @@ Template.reset.events({
     if (password && password === conpassword) {
       Accounts.resetPassword(token, password, function (err) {
         if (err) {
-          alert("We are sorry but something went wrong");
+          Session.set("alert", "verifyemail");
+          Session.set("color", "unsuccess");
+          layoutalert();
         } else {
-          console.log("Your password has been changed. Welcome back!");
           Meteor.logout();
           FlowRouter.go("post");
           $(".exampleModal").modal("show");
