@@ -16,10 +16,10 @@
       {{/if}} {{#if currentUser}}
       <div class="profile">
         {{>profile}} {{time}}
+        <i class="fab fa-github github"></i>
         <br />
         <!-- <a name="resetemail" id="fileupload" class="btn btn-primary">profile</a> -->
       </div>
-
       <div class="statusicon">
         {{>status}}<br />
         <br />
@@ -50,8 +50,10 @@
       {{/if}}
       <br />
       <br />
-      {{>main}} {{>model}} {{#if currentUser}}
-      <form action="" class="new-task">
+      {{>main}}
+      {{>model}}
+      {{#if currentUser}}
+      <form class="new-task">
         <input type="text" name="text" placeholder="insert todos" id="text" />
       </form>
       {{/if}}

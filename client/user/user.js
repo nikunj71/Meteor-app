@@ -1,4 +1,5 @@
 import "./user.html";
+
 Template.user.helpers({
   username: function () {
     const id = FlowRouter.getParam("userid");
@@ -12,9 +13,8 @@ Template.user.helpers({
 Template.user.events({
   "submit .view"(e) {
     e.preventDefault();
-    const id = Meteor.userId();
     const view = e.target.view.value;
-    Meteor.call("updateusername", id, view);
-    FlowRouter.go("post");
+    Meteor.call("updateusername", Meteor.userId(), view);
+    window.close();
   },
 });

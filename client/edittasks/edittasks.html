@@ -1,11 +1,11 @@
 <template name="edit">
   <div class="card text-center">
     <div class="card-header">Tasks data</div>
-    {{#if editjob._id}}
+    {{#if edittask._id}}
     <div class="card-body">
-      <h5 class="card-title">{{editjob._id}}</h5>
-      <p class="card-text">{{editjob.username}}</p>
-      <a href="#" class="btn btn-primary">{{editjob.text}}</a>
+      <h5 class="card-title">{{edittask._id}}</h5>
+      <p class="card-text">{{edittask.username}}</p>
+      <a href="#" class="btn btn-primary">{{edittask.text}}</a>
     </div>
     {{else}} {{>error}} {{/if}}
   </div>

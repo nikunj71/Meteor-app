@@ -5,7 +5,6 @@ Template.Verificationstatus.helpers({
       Meteor.user() &&
       Meteor.user().emails[0] &&
       Meteor.user().emails[0].verified;
-
     if (statuscheck === true) {
       return "./check1.png ";
     } else {

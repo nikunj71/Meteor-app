@@ -4,7 +4,6 @@
     {{#if username._id}}
     <div class="card-body">
       <h5 class="card-title">{{username._id}}</h5>
-
       <form class="view">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Username</label>
@@ -19,7 +18,6 @@
       </form>
     </div>
     <h5 class="card-title">{{username.email}}</h5>
-
     <div class="card-footer text-muted">{{username.createdAt}}</div>
     {{else}} {{>error}} {{/if}}
   </div>

@@ -1,46 +1,27 @@
 import "./post.html";
 
-// localStorage.setItem("login",false)
 Template.post.onCreated(function () {
   const tmp = this;
   tmp.state = new ReactiveDict();
-  this.statusicon = new ReactiveVar();
+  tmp.statusicon = new ReactiveVar();
   tmp.autorun(() => {
     tmp.subscribe("tasks");
   });
   setTimeout(function () {
     $(".layout").fadeOut(1000);
   }, 5000);
-  
-  var check=localStorage.getItem("login")
-  console.log(check)
- if(check==="false")
- {
-  return Meteor.logout() 
- }
- 
-  
 });
-
 
 Template.post.onRendered(() => {
   if (!Meteor.userId()) {
     loginmodel();
   }
-
-
- 
-  console.log("hello")
-  // console.log(localStorage.getItem("Meteor.userId"));
-  // if (localStorage.getItem("Meteoredid") === null) {
-  //   Meteor.logout();
-  // }
 });
 
 Template.post.helpers({
   tasks() {
-    const instance = Template.instance();
-    if (instance.state.get("hideCompleted")) {
+    const i = Template.instance();
+    if (i.state.get("hideCompleted")) {
       return Tasks.find(
         { checked: { $ne: true } },
         { sort: { CreatedAt: -1 } }
@@ -58,6 +39,7 @@ Template.post.helpers({
     const complete = Tasks.find({ checked: { $ne: false } });
     return complete.count();
   },
+
   verificationstatus() {
     const emailold =
       Meteor.user() &&
@@ -70,11 +52,12 @@ Template.post.helpers({
       return false;
     }
   },
+
   time() {
-    timeout = Meteor.setTimeout(function () {
-      Session.set("now", new Date().toLocaleTimeString());
+   Meteor.setTimeout(function () {
+      Session.set("time", new Date().toLocaleTimeString());
     }, 1000);
-    return Session.get("now");
+    return Session.get("time");
   },
 });
 
@@ -88,12 +71,15 @@ Template.post.events({
     }
     target.text.value = "";
   },
+
   "click .delete"() {
     return Meteor.call("deletetasks", this._id);
   },
+
   "click .toggle-checked"() {
     return Meteor.call("checkedtasks", this._id, !this.checked);
   },
+
   "click .onBtn"() {
     Meteor.disconnect();
     Session.set("enemy", false);
@@ -101,6 +87,7 @@ Template.post.events({
     $(".onBtn").hide();
     console.log("Server is:-", Meteor.status().status);
   },
+
   "click .offBtn"() {
     Meteor.reconnect();
     Session.set("enemy", true);
@@ -108,21 +95,23 @@ Template.post.events({
     $(".onBtn").show();
     console.log("Server is:-", Meteor.status().status);
   },
+
   "click .logout"(e) {
     e.preventDefault();
     Meteor.logout();
-  localStorage.setItem("login",false)
-
-
+    localStorage.setItem("login", false);
     $(".login").show();
     $(".logout").hide();
   },
-  "change .hide-completed input"(event, instance) {
-    instance.state.set("hideCompleted", event.target.checked);
+
+  "change .hide-completed input"(e, i) {
+    i.state.set("hideCompleted", e.target.checked);
   },
+
   "click .toggle-private"() {
     Meteor.call("privatetasks", this._id, !this.private);
   },
+
   "submit .edit-task"(e) {
     e.preventDefault();
     const target = e.target;
@@ -131,12 +120,11 @@ Template.post.events({
     Meteor.call("updatetasks", id, edit);
     $(".staticBackdrop").modal("hide");
   },
+
   "click .updateclick"(e) {
     Session.set("boxname", "edittask");
     const complete = Tasks.findOne({ _id: this._id });
     if (complete.checked === true) {
-      $(".staticBackdrop").modal("hide");
-      $(".edit-task").hide();
       alert("it`s complete tasks");
     } else {
       $(".staticBackdrop").modal("show");
@@ -149,16 +137,19 @@ Template.post.events({
     $(".complete").hide();
     Session.set("id", this._id);
   },
+
   "click .alerticon"() {
     $(".layout").fadeOut(1000);
   },
-  "click #fileupload"() {
-    $(".staticBackdrop").modal("show");
-    $("#fileuploadform").show();
-    $(".edit-task").hide();
-    $(".edit-email").hide();
-    $(".edit-pass").hide();
-  },
+
+  // "click #fileupload"() {
+  //   $(".staticBackdrop").modal("show");
+  //   $("#fileuploadform").show();
+  //   $(".edit-task").hide();
+  //   $(".edit-email").hide();
+  //   $(".edit-pass").hide();
+  // },
+
   "change #files"(e, r) {
     const id = Meteor.userId();
     const file = $("#files").get(0).files[0];
@@ -176,6 +167,7 @@ Template.post.events({
       }
     });
   },
+
   "click .incompleteCount"() {
     $(".staticBackdrop").modal("show");
     $("#fileuploadform").hide();
@@ -185,7 +177,6 @@ Template.post.events({
     $(".edit-email").hide();
     $(".edit-pass").hide();
     $("#fileuploadform").hide();
-
     Session.set("boxname", "incomplete");
     const incomplete = Tasks.find(
       { checked: false },
@@ -194,6 +185,7 @@ Template.post.events({
     console.log(incomplete);
     Session.set("functionincomplete", incomplete);
   },
+
   "click .completedCount"() {
     $(".staticBackdrop").modal("show");
     $("#fileuploadform").hide();
@@ -210,16 +202,23 @@ Template.post.events({
     ).fetch();
     Session.set("functionincomplete", complete);
   },
-  "mouseenter .imagevarification"() {
-    const verify = Template.instance().statusicon.get();
+
+  "mouseenter .imagevarification"(e, i) {
+    const verify = i.statusicon.get();
     if (verify === false) {
       $(".ptext").show(1000);
     } else {
       $(".ptext1").show(1000);
     }
   },
+
   "mouseleave .imagevarification"() {
     $(".ptext").hide(1000);
     $(".ptext1").hide(1000);
+  },
+
+  "click .github"() {
+    const Root = Meteor.settings.public.Root.URL;
+    window.open(`${Root}/nikunj71/Meteor-app`);
   },
 });

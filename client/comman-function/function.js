@@ -52,6 +52,12 @@ messages = () => {
   if (alertmessages === "resetingpassword") {
     return "successfully reset password";
   }
+  if(alertmessages==="verifyemail")
+  {
+    return "something is wrong" 
+  }
+  
+  
 };
 layoutalert = () => {
   $("#layoutalert").show("slow");
@@ -86,4 +92,24 @@ color = () => {
     return "alert alert-danger";
   }
 };
-export { color, loginmodel, loginalert, modelalert, layoutalert, messages }
+boxName=()=>{
+  const editdetails = Session.get("boxname");
+  if (editdetails === "edit-email") {
+    return "Update email";
+  }
+  if (editdetails === "edittask") {
+    return "Edit Task";
+  }
+  if (editdetails === "edit-pass") {
+    return "Reset password";
+  }
+  if (editdetails == "incomplete") {
+    return "Incomplete Tasks";
+  }
+  if (editdetails == "complete") {
+    return "complete Tasks";
+  }
+}
+
+
+export { color, loginmodel, loginalert, modelalert, layoutalert, messages,boxName }
