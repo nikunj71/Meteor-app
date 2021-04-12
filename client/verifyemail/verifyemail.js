@@ -1,6 +1,6 @@
 import "./verifyemail.html";
 Template.verifyemail.events({
-  "click .yes"() {
+  "click .yes":()=> {
     const token = FlowRouter.getParam("tokenemail");
     Accounts.verifyEmail(token, function (e) {
       if (e) {
@@ -15,7 +15,7 @@ Template.verifyemail.events({
       }
     });
   },
-  "click .no"() {
+  "click .no":()=> {
     FlowRouter.go("post");
     window.close()
     Session.set("color", "unsuccess");

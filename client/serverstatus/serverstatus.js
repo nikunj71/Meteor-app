@@ -1,5 +1,5 @@
 import "./serverstatus.html";
-Template.status.onCreated(function () {
+Template.status.onCreated(function(){
   const tmp = this;
   Session.set("enemy", true);
 });

@@ -1,7 +1,7 @@
 import "./model.html";
 
 Template.model.helpers({
-  edittask: function (e) {
+  edittask:  (e)=> {
     const id = Session.get("id");
     return Tasks.findOne({ _id: id }, { fields: { text: 1 } });
   },
@@ -30,12 +30,12 @@ Template.model.helpers({
 });
 
 Template.model.events({
-  "submit .edit-email"(e) {
+  "submit .edit-email":(e)=> {
     e.preventDefault();
     const emailold = Meteor.user().emails[0].address;
     const emailcurrent = e.target.current.value;
     const emailnew = e.target.new.value;
-    if (emailcurrent !== "") {
+        if (emailcurrent !== "") {
       if (emailcurrent === emailold) {
         if (emailnew !== "") {
           if (emailnew && emailnew !== emailcurrent) {
@@ -86,7 +86,7 @@ Template.model.events({
     e.target.new.value = "";
   },
 
-  "submit .edit-pass"(e) {
+  "submit .edit-pass":(e)=> {
     e.preventDefault();
     const newpass = e.target.newpass.value;
     const oldpass = e.target.oldpass.value;

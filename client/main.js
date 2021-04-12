@@ -20,7 +20,9 @@ import "./serverstatus/serverstatus.js";
 import "./loginBtn/loginBtn.html";
 
 // ----------------------------------------------filename-----------------------------------------------------------------------------------
-
+Template.Route.onCreated(function(){
+FlowRouter.go("post")
+})
 // Template.profile.helpers({
 //   profile: () => {
 //     const filename = Session.get("filename");

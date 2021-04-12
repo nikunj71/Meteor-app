@@ -1,6 +1,6 @@
 import "./serach.html";
 Template.search.events({
-  "keyup .inputsearch"(e) {
+  "keyup .inputsearch":(e)=> {
     var value = $(e.target).val().toLowerCase();
     $(".textsearch ")
       .parent()

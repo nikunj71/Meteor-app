@@ -1,7 +1,7 @@
 import "./reset-password.html";
 
 Template.reset.events({
-  "submit .resetpassword"(e) {
+  "submit .resetpassword":(e)=> {
     e.preventDefault();
     const password = $(".pass").val();
     const conpassword = $(".conpass").val();
@@ -27,7 +27,7 @@ Template.reset.events({
     }
   },
 
-  "click #backreset"() {
+  "click #backreset":()=> {
     FlowRouter.go("post");
     $(".exampleModal").model("show");
     $(".sigin").show(1000);

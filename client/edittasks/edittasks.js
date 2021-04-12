@@ -1,9 +1,9 @@
 import "./edittasks.html";
-Template.edit.onCreated(function () {
-  Meteor.subscribe("tasks");
+Template.edit.onCreated(function(){
+  Meteor.subscribe("editdata");
 });
 Template.edit.helpers({
-  edittask: function () {
+  edittask:()=> {
     const id = FlowRouter.getParam("id");
     const data = Tasks.findOne(
       { _id: id },
@@ -11,4 +11,13 @@ Template.edit.helpers({
     );
    return data;
   },
+  currentUser:()=>{
+    if(Meteor.userId())
+    {
+      return true
+    }
+    else{
+      return false
+    }
+  }
 });

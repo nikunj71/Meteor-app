@@ -5,7 +5,7 @@ Template.post.onCreated(function () {
   tmp.state = new ReactiveDict();
   tmp.statusicon = new ReactiveVar();
   tmp.autorun(() => {
-    tmp.subscribe("tasks");
+    tmp.subscribe("alldata");
   });
   setTimeout(function () {
     $(".layout").fadeOut(1000);
@@ -19,7 +19,7 @@ Template.post.onRendered(() => {
 });
 
 Template.post.helpers({
-  tasks() {
+  tasks:()=>{
     const i = Template.instance();
     if (i.state.get("hideCompleted")) {
       return Tasks.find(
@@ -59,6 +59,15 @@ Template.post.helpers({
     }, 1000);
     return Session.get("time");
   },
+  currentUser:()=>{
+    if(Meteor.userId())
+    {
+      return true
+    }
+    else{
+      return false
+    }
+  }
 });
 
 Template.post.events({
@@ -182,7 +191,6 @@ Template.post.events({
       { checked: false },
       { fields: { text: 1, username: 1 } }
     ).fetch();
-    console.log(incomplete);
     Session.set("functionincomplete", incomplete);
   },
 
@@ -198,7 +206,8 @@ Template.post.events({
     Session.set("boxname", "complete");
     const complete = Tasks.find(
       { checked: true },
-      { fields: { text: 1, username: 1 } }
+      { fields: { text: 1, username: 1 ,CTime:1,CDate:1},
+    sort:{CTime:-1} }
     ).fetch();
     Session.set("functionincomplete", complete);
   },
