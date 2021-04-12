@@ -1,6 +1,6 @@
 import "./login.html";
 
-Template.login.onCreated(()=>{
+Template.login.onCreated(function(){
   Session.set("pass", "password");
   Session.set("passin", "password");
 });

@@ -1,6 +1,6 @@
 import "./post.html";
 
-Template.post.onCreated( ()=> {
+Template.post.onCreated(function () {
   const tmp = this;
   tmp.state = new ReactiveDict();
   tmp.statusicon = new ReactiveVar();
@@ -30,17 +30,17 @@ Template.post.helpers({
     return Tasks.find({}, { sort: { Time: -1, Date: -1 } });
   },
 
-  incompleteCount:()=> {
+  incompleteCount() {
     const incomplete = Tasks.find({ checked: { $ne: true } });
     return incomplete.count();
   },
 
-  completedCount:()=> {
+  completedCount() {
     const complete = Tasks.find({ checked: { $ne: false } });
     return complete.count();
   },
 
-  verificationstatus:()=> {
+  verificationstatus() {
     const emailold =
       Meteor.user() &&
       Meteor.user().emails[0] &&
@@ -53,7 +53,7 @@ Template.post.helpers({
     }
   },
 
-  time:()=> {
+  time() {
    Meteor.setTimeout(function () {
       Session.set("time", new Date().toLocaleTimeString());
     }, 1000);
@@ -71,7 +71,7 @@ Template.post.helpers({
 });
 
 Template.post.events({
-  "submit .new-task":(event)=> {
+  "submit .new-task"(event) {
     event.preventDefault();
     const target = event.target;
     const text = target.text.value;
@@ -81,15 +81,15 @@ Template.post.events({
     target.text.value = "";
   },
 
-  "click .delete":()=> {
+  "click .delete"() {
     return Meteor.call("deletetasks", this._id);
   },
 
-  "click .toggle-checked":()=> {
+  "click .toggle-checked"() {
     return Meteor.call("checkedtasks", this._id, !this.checked);
   },
 
-  "click .onBtn":()=> {
+  "click .onBtn"() {
     Meteor.disconnect();
     Session.set("enemy", false);
     $(".offBtn").show();
@@ -97,7 +97,7 @@ Template.post.events({
     console.log("Server is:-", Meteor.status().status);
   },
 
-  "click .offBtn":()=> {
+  "click .offBtn"() {
     Meteor.reconnect();
     Session.set("enemy", true);
     $(".offBtn").hide();
@@ -105,7 +105,7 @@ Template.post.events({
     console.log("Server is:-", Meteor.status().status);
   },
 
-  "click .logout":(e)=> {
+  "click .logout"(e) {
     e.preventDefault();
     Meteor.logout();
     localStorage.setItem("login", false);
@@ -113,15 +113,15 @@ Template.post.events({
     $(".logout").hide();
   },
 
-  "change .hide-completed input":(e, i)=> {
+  "change .hide-completed input"(e, i) {
     i.state.set("hideCompleted", e.target.checked);
   },
 
-  "click .toggle-private":()=> {
+  "click .toggle-private"() {
     Meteor.call("privatetasks", this._id, !this.private);
   },
 
-  "submit .edit-task":(e)=> {
+  "submit .edit-task"(e) {
     e.preventDefault();
     const target = e.target;
     const edit = target.edit.value;
@@ -130,7 +130,7 @@ Template.post.events({
     $(".staticBackdrop").modal("hide");
   },
 
-  "click .updateclick":(e)=> {
+  "click .updateclick"(e) {
     Session.set("boxname", "edittask");
     const complete = Tasks.findOne({ _id: this._id });
     if (complete.checked === true) {
@@ -147,7 +147,7 @@ Template.post.events({
     Session.set("id", this._id);
   },
 
-  "click .alerticon":() =>{
+  "click .alerticon"() {
     $(".layout").fadeOut(1000);
   },
 
@@ -159,7 +159,7 @@ Template.post.events({
   //   $(".edit-pass").hide();
   // },
 
-  "change #files":(e, r)=> {
+  "change #files"(e, r) {
     const id = Meteor.userId();
     const file = $("#files").get(0).files[0];
     const filename = file.name;
@@ -177,7 +177,7 @@ Template.post.events({
     });
   },
 
-  "click .incompleteCount":()=> {
+  "click .incompleteCount"() {
     $(".staticBackdrop").modal("show");
     $("#fileuploadform").hide();
     $(".complete").hide();
@@ -194,7 +194,7 @@ Template.post.events({
     Session.set("functionincomplete", incomplete);
   },
 
-  "click .completedCount":()=> {
+  "click .completedCount"() {
     $(".staticBackdrop").modal("show");
     $("#fileuploadform").hide();
     $(".incomplete").hide();
@@ -212,7 +212,7 @@ Template.post.events({
     Session.set("functionincomplete", complete);
   },
 
-  "mouseenter .imagevarification":(e, i)=> {
+  "mouseenter .imagevarification"(e, i) {
     const verify = i.statusicon.get();
     if (verify === false) {
       $(".ptext").show(1000);
@@ -221,12 +221,12 @@ Template.post.events({
     }
   },
 
-  "mouseleave .imagevarification":()=> {
+  "mouseleave .imagevarification"() {
     $(".ptext").hide(1000);
     $(".ptext1").hide(1000);
   },
 
-  "click .github":()=> {
+  "click .github"() {
     const Root = Meteor.settings.public.Root.URL;
     window.open(`${Root}/nikunj71/Meteor-app`);
   },

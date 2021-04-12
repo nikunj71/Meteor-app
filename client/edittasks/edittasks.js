@@ -1,5 +1,5 @@
 import "./edittasks.html";
-Template.edit.onCreated(()=>{
+Template.edit.onCreated(function(){
   Meteor.subscribe("editdata");
 });
 Template.edit.helpers({
