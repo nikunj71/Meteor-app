@@ -1,7 +1,6 @@
 import "./login.html";
 
-Template.login.onCreated(function () {
-  Meteor.subscribe("tasks");
+Template.login.onCreated(()=>{
   Session.set("pass", "password");
   Session.set("passin", "password");
 });
@@ -34,7 +33,7 @@ Accounts.onLogout(() => {
 Accounts.onLogin(() => {});
 
 Template.login.events({
-  "submit .sigin": function (event) {
+  "submit .sigin":(event)=>{
     event.preventDefault();
     const target = event.target;
     const username = target.username.value;
@@ -73,15 +72,15 @@ Template.login.events({
     }
   },
 
-  "submit .signup": function (event) {
+  "submit .signup":(event)=>{
     event.preventDefault();
     const filename = Session.get("filename");
     const username = event.target.username.value;
     const password = event.target.password.value;
-    const email = target.email.value;
-    target.username.value = "";
-    target.password.value = "";
-    target.email.value = "";
+    const email = event.target.email.value;
+    event.target.username.value = "";
+    event.target.password.value = "";
+    event.target.email.value = "";
 
     Session.set("username", "connected");
 
@@ -98,56 +97,56 @@ Template.login.events({
     });
   },
 
-  "click .backBtn"() {
+  "click .backBtn":()=>{
     $(".signup").hide(1000);
     $(".sigin").show(1000);
     $(".register-form").hide(1000);
   },
 
-  "click .signupBtn"() {
+  "click .signupBtn":()=>{
     $(".signup").show(1000);
     $(".sigin").hide(1000);
   },
 
-  "mouseenter .eye"() {
+  "mouseenter #eye":()=>{
     Session.set("pass", "text");
-    $(".eye").hide();
-    $(".eye1").show();
+    $("#eye").hide();
+    $("#eye1").show();
   },
 
-  "mouseleave  .eye1"() {
+  "mouseleave  #eye1":()=>{
     Session.set("pass", "password");
-    $(".eye").show();
-    $(".eye1").hide();
+    $("#eye").show();
+    $("#eye1").hide();
   },
 
-  "mouseenter .eyein"() {
+  "mouseenter #eyein":()=>{
     Session.set("passin", "text");
-    $(".eyein").hide();
-    $(".eyein1").show();
+    $("#eyein").hide();
+    $("#eyein1").show();
   },
 
-  "mouseleave .eyein1"() {
+  "mouseleave #eyein1":()=>{
     Session.set("passin", "password");
-    $(".eyein").show();
-    $(".eyein1").hide();
+    $("#eyein").show();
+    $("#eyein1").hide();
   },
 
-  "click .back"() {
+  "click .back":()=>{
     $(".exampleModal").modal("hide");
   },
 
-  "click .wrong"() {
+  "click .wrong":()=>{
     $(".register-form").hide(1000);
     $(".sigin").show(1000);
   },
 
-  "click .forgot_pswd"() {
+  "click .forgot_pswd":()=>{
     $(".register-form").show();
     $(".sigin").hide(1000);
   },
 
-  "submit .email"(e) {
+  "submit .email":(e)=>{
     e.preventDefault();
     const email = $("input[name=emailvarifiction]").val();
     Accounts.forgotPassword({ email: email }, function (e, r) {

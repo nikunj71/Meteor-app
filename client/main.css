@@ -28,19 +28,18 @@ body {
   min-height: 100%;
   background: white;
 }
-.eye1 {
-  display: none;
-}
-.eye {
-  display: none !important;
-}
-.eyein {
-  display: none !important;
-}
-.eyein1 {
+#eye1 {
   display: none;
 }
 
+#eyein {
+  display: none 
+}
+.Comapletetasks{
+  float: right;
+  /* padding: 20px; */
+  color:lightslategrey
+}
 header {
   background: #d2edf4;
   background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);

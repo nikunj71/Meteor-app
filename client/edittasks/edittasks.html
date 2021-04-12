@@ -1,12 +1,16 @@
 <template name="edit">
   <div class="card text-center">
     <div class="card-header">Tasks data</div>
-    {{#if edittask._id}}
+    {{#if currentUser}}
+    <!-- {{#if edittask._id}} -->
     <div class="card-body">
       <h5 class="card-title">{{edittask._id}}</h5>
       <p class="card-text">{{edittask.username}}</p>
       <a href="#" class="btn btn-primary">{{edittask.text}}</a>
     </div>
-    {{else}} {{>error}} {{/if}}
+    <!-- {{else}} {{>error}} {{/if}} -->
+    {{else}}
+    {{>Route}}
+    {{/if}}
   </div>
 </template>

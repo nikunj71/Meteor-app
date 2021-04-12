@@ -32,5 +32,4 @@ server-render
 ostrio:files
 ddp-rate-limiter
 npm-bcrypt
-zuuk:stale-session
 ejson
