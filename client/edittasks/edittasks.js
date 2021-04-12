@@ -1,12 +1,13 @@
 import "./edittasks.html";
 Template.edit.onCreated(function(){
   Meteor.subscribe("editdata");
+
 });
 Template.edit.helpers({
   edittask:()=> {
     const id = FlowRouter.getParam("id");
     const data = Tasks.findOne(
-      { _id: id },
+      { _id: id,checked:false},
       { fields: { username: 1, text: 1 } }
     );
    return data;
@@ -19,5 +20,5 @@ Template.edit.helpers({
     else{
       return false
     }
-  }
+  },
 });

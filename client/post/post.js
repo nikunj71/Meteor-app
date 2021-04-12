@@ -60,6 +60,7 @@ Template.post.helpers({
     return Session.get("time");
   },
   currentUser:()=>{
+    
     if(Meteor.userId())
     {
       return true
@@ -67,6 +68,9 @@ Template.post.helpers({
     else{
       return false
     }
+  },
+  currentUsername:()=>{
+    return Meteor.user() && Meteor.user().username
   }
 });
 

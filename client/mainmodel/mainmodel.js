@@ -45,7 +45,7 @@ Template.main.events({
 
   "click .usernamechange":()=>{
     const userid = Meteor.userId();
-    // FlowRouter.go(`/user/${userid}`);
+    // FlowRouter.go("user",{userid:userid})
     // window.open(`http://localhost:3000/user/${userid}`);
      window.open(Meteor.absoluteUrl()+`user/${userid}`)
   },
