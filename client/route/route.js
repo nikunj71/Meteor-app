@@ -1,5 +1,4 @@
 
-
 FlowRouter.route("/", {
   action: function () {
     BlazeLayout.render("layout", { main: "home" });
@@ -21,7 +20,7 @@ FlowRouter.route("/post", {
 });
 
 FlowRouter.route("/pop", {
-  action: function (params) {
+  action: function () {
     BlazeLayout.render("layout", { main: "popmain" });
   },
 });
@@ -35,7 +34,7 @@ FlowRouter.route("/tasks/:id", {
 
 FlowRouter.route("/user/:userid", {
   name: "user",
-  action: function (params) {
+  action: function () {
     BlazeLayout.render("layout", { main: "user" });
   },
 });
